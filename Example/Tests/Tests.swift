@@ -2,7 +2,7 @@
 
 import Quick
 import Nimble
-import Contlo-iOS-SDK
+//import Contlo-iOS-SDK
 
 class TableOfContentsSpec: QuickSpec {
     override func spec() {

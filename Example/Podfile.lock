@@ -1,0 +1,27 @@
+PODS:
+  - Contlo-iOS-SDK (0.1.0)
+  - Nimble (10.0.0)
+  - Quick (2.2.1)
+
+DEPENDENCIES:
+  - Contlo-iOS-SDK (from `../`)
+  - Nimble (~> 10.0.0)
+  - Quick (~> 2.2.0)
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - Quick
+
+EXTERNAL SOURCES:
+  Contlo-iOS-SDK:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Contlo-iOS-SDK: a41b665a2e01bd2a0543c1853fe55b95f781868b
+  Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
+  Quick: f5754d69b7013f5864c29aab9ae6f0c79c5bc200
+
+PODFILE CHECKSUM: f064ee8509fac6bc0733673805982136e046f5c9
+
+COCOAPODS: 1.14.2

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07B60A2E2AF0E332000DCA3A /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B60A2D2AF0E332000DCA3A /* RegistrationView.swift */; };
 		2F096A0B65FD66C623684997 /* Pods_Contlo_iOS_SDK_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD199E82C7D17742A35E4EA /* Pods_Contlo_iOS_SDK_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07B60A2D2AF0E332000DCA3A /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		4BD199E82C7D17742A35E4EA /* Pods_Contlo_iOS_SDK_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Contlo_iOS_SDK_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* Contlo-iOS-SDK_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contlo-iOS-SDK_Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -39,11 +41,11 @@
 		607FACE51AFB9204008FA782 /* Contlo-iOS-SDK_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Contlo-iOS-SDK_Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		90A5AD03DB2B36AF8487BC4D /* Contlo-iOS-SDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = "Contlo-iOS-SDK.podspec"; path = "../Contlo-iOS-SDK.podspec"; sourceTree = "<group>"; };
-		927A2FD705D8D30A61290D6C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		90A5AD03DB2B36AF8487BC4D /* Contlo-iOS-SDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "Contlo-iOS-SDK.podspec"; path = "../Contlo-iOS-SDK.podspec"; sourceTree = "<group>"; };
+		927A2FD705D8D30A61290D6C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		AAC431EA09597938E9CC4F52 /* Pods-Contlo-iOS-SDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contlo-iOS-SDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Contlo-iOS-SDK_Tests/Pods-Contlo-iOS-SDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		B1F2272F6BE12AAF5B2FE61A /* Pods-Contlo-iOS-SDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contlo-iOS-SDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-Contlo-iOS-SDK_Tests/Pods-Contlo-iOS-SDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		B61D6AC9EE475951110AABD3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		B61D6AC9EE475951110AABD3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C845749453D0A9A0E4F17615 /* Pods-Contlo-iOS-SDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contlo-iOS-SDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-Contlo-iOS-SDK_Example/Pods-Contlo-iOS-SDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DB4CC80BAC095B8057F1A785 /* Pods-Contlo-iOS-SDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contlo-iOS-SDK_Example.release.xcconfig"; path = "Target Support Files/Pods-Contlo-iOS-SDK_Example/Pods-Contlo-iOS-SDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 		DDC2D8ED3456D2F4C52AFDD6 /* Pods_Contlo_iOS_SDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Contlo_iOS_SDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,7 +79,6 @@
 				AAC431EA09597938E9CC4F52 /* Pods-Contlo-iOS-SDK_Tests.debug.xcconfig */,
 				B1F2272F6BE12AAF5B2FE61A /* Pods-Contlo-iOS-SDK_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -111,6 +112,7 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				07B60A2D2AF0E332000DCA3A /* RegistrationView.swift */,
 			);
 			name = "Example for Contlo-iOS-SDK";
 			path = "Contlo-iOS-SDK";
@@ -228,6 +230,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -352,6 +355,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07B60A2E2AF0E332000DCA3A /* RegistrationView.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
@@ -440,7 +444,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -486,7 +490,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -500,6 +504,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Contlo-iOS-SDK/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
@@ -515,6 +520,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Contlo-iOS-SDK/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
