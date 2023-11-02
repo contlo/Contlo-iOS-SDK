@@ -15,7 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var phoneNumberField: UITextField!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var registerButton: UIButton!
-
+    @IBOutlet weak var skipButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -32,6 +33,10 @@ class ViewController: UIViewController {
     @IBAction func onRegister(_ sender: UIButton) {
         print("clicked")
         print(emailField.text)
+    }
+    
+    @IBAction func onSkip(_ sender: UIButton) {
+        print("skip")
     }
 }
 

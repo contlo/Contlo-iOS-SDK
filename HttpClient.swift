@@ -30,6 +30,7 @@ class HttpClient {
             }
             
             if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                print("config: \(responseString)")
                 completion(.success(responseString))
             } else {
                 completion(.failure(NSError(domain: "HttpClient", code: 1, userInfo: nil)))
@@ -89,18 +90,13 @@ class HttpClient {
         
     }
     
-//    func addGlobalHeader(request: URLRequest) {
-//        request.addValue("Content-Type", forHTTPHeaderField: "application/json")
-//        request.addValue("Accept", forHTTPHeaderField: "application/json")
-//        request.addValue("X-Api-Key", forHTTPHeaderField: "application/json")
-//    }
 }
 
 extension URLRequest {
     mutating func addGlobalHeader() {
         self.addValue("application/json", forHTTPHeaderField: "Content-Type")
         self.addValue("application/json", forHTTPHeaderField: "Accept")
-        let apiKey = ContloDefaults.getApiKey()
-        self.addValue("4a0975d62f2e8625d5cba520c55717db", forHTTPHeaderField: "X-Api-Key")
+        let apiKey = ContloDefaults.getApiKey() ?? "nil"
+        self.addValue(apiKey, forHTTPHeaderField: "X-Api-Key")
     }
 }

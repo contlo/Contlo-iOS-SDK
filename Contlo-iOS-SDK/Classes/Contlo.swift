@@ -1,12 +1,44 @@
-open class Contlo {
+@objc open class Contlo: NSObject {
     
-    open class func initialize() {
+    open class func initialize(apiKey: String) {
         print("Contlo initalize")
+        ContloDefaults.setApiKey(apiKey)
+        ConfigService.fetchConfig(apiKey: apiKey)
+        // API Call to check for config
+        
+        if(ContloDefaults.isNewAppInstall()) {
+            // Send new app install event
+        } else {
+            // Check for app update
+        }
+        
         var httpClient = HttpClient()
         let urlData = "https://api1.contlo.com/v2/track"
 //        httpClient.sendPostRequest(url: URL(string: urlData)!, data: "ad", completion: {_ in
 //
 //        })
+    }
+    
+//    open class sendEvent(eventName: String) {
+//
+//    }
+    
+//    open class sendEvent(eventName: String, eventProperty: [String, String]  = nil, profileProperty: [String, String] = nil) {
+//
+//    }
+//
+//    open class sendUserData(audience: String, isUpdate: Bool = false) {
+//
+//    }
+//
+//    open class sendPushConsent(consent: Bool) {
+//        // First check for SDK initialize
+//        //then check for Notification permission
+//        // If enabled, then send push consent API call
+//    }
+    
+    open class func logout() {
+        ContloDefaults.clear()
     }
     
     open class func sendUserData() {

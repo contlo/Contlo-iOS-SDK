@@ -3,7 +3,7 @@ import Foundation
 class ContloDefaults {
     
     // MARK: - User Defaults Keys
-    private enum Keys {
+    private enum Keys: CaseIterable {
         static let username = "username"
         static let age = "age"
         static let isLoggedIn = "isLoggedIn"
@@ -182,8 +182,8 @@ class ContloDefaults {
         return UserDefaults.standard.string(forKey: Keys.SOURCE)
     }
     
-    static func getLastSyncTime() -> TimeInterval {
-        return UserDefaults.standard.double(forKey: Keys.LAST_SYNC_TIME)
+    static func getLastSyncTime() -> Int64 {
+        return Int64(UserDefaults.standard.integer(forKey: Keys.LAST_SYNC_TIME))
     }
     
     static func getConfigTimeframe() -> Int {
@@ -215,7 +215,11 @@ class ContloDefaults {
     }
     // MARK: - Synchronize Defaults
     
-    static func synchronize() {
-        UserDefaults.standard.synchronize()
+    static func clear() {
+        for key in Keys.allCases {
+            if let value = Mirror(reflecting: Keys.self).descendant(key as! MirrorPath) as! String? {
+                UserDefaults.standard.removeObject(forKey: value)
+            }
+        }
     }
 }
