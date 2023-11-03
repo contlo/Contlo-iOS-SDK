@@ -8,26 +8,101 @@
 import Foundation
 
 class EventHandler {
-    let TAG = "EventHandler"
-    let EVENTS_V2 = "/v2/track"
-    let CONTLO_PROD = "https://api1.contlo.com"
+    static let TAG = "EventHandler"
+    static let EVENTS_V2 = "/v2/track"
+    static let CONTLO_PROD = "https://api1.contlo.com"
+    static let CONTLO_STAGING = "https://api.contlo.in"
     
-    private func getEventsBaseUrl() -> URL {
-        return URL(string: CONTLO_PROD + EVENTS_V2)!
+    private static func getEventsBaseUrl() -> URL {
+        return URL(string: CONTLO_STAGING + EVENTS_V2)!
 //        return CONTLO_PROD + EVENTS_V2
     }
     
-    func sendEvent(eventName: String) -> String {
+    static func sendAppEvent(eventName: String, completion: @escaping (String) -> Void) {
+        let eventProperty: [String: String] = [
+            "event_type": "system"
+        ]
+        sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: nil, completion: completion)
+    }
+    
+    static func sendEvent(eventName: String, completion: @escaping (String) -> Void ) {
+        let eventProperty: [String: String] = [
+            "event_type": "custom"
+        ]
+        sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: nil, completion: completion)
+    }
+    
+    static func sendEvent(eventName: String, eventProperty: [String:String]?, profileProperty: [String: String]?, completion: ((String) -> Void)? = nil) {
         if(eventName.isEmpty) {
-            return "Event name cannot be empty"
+            completion?("Event name is empty")
         }
+        let email = ContloDefaults.getEmail()
+        let phone = ContloDefaults.getPhoneNumber() ?? nil
+        let externalId = ContloDefaults.getExternalId() ?? nil
+        let finalEventName = eventName.replacingOccurrences(of: " ", with: "_")
+
+        var event = Event(event_id: generateId(), event: finalEventName, email: email, phone_number: phone, external_id: externalId, properties: [:], mobile_push_consent: Utils.isNotificationPermission() ,device_event_time: UInt64(Utils.getCurrentMillis()), profile_properties: [:])
+        event.addEventProperty()
+        sendEvent(event: event) { result in
+            switch result {
+            case .success(let value):
+                completion?(value)
+            case .error(let error):
+                completion?("Some error occured: \(error)")
+            }
+        }
+    }
+    
+    
+    static func sendEvent(event: Event, completion: @escaping (Resource<String>) -> Void) {
+        if(event.event.isEmpty) {
+//            completion.() Resource<Event>(throwable: NSError(domain: "HttpClient", code: 1, userInfo: nil))
+            completion(.error(ContloError.Error("Event Name is empty")))
+        }
+//        event.event = "ada"
+//        event.addEventProperty()
+//        var data: [String: String] = [
+//            "app_name": Utils.getAppName(),
+//            "app_version": Utils.getAppVersion(),
+//            "time_zone": Utils.getTimezone(),
+//            "source": "Mobile"
+//        ]
+//        event.properties?.merge(data) { (_, new) in new }
         
         var httpClient = HttpClient()
+        do {
+            let jsonEvent = try JSONEncoder().encode(event)
         
-        httpClient.sendPostRequest(url: getEventsBaseUrl(), data: eventName, completion: {_ in
-            print("completion")
-        })
-        return "done"
+            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+        
+            httpClient.sendPostRequest(url: getEventsBaseUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
+                switch result {
+                case .success(let value):
+                    do {
+                        let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
+                        if(response.isSuccess()) {
+                            ContloDefaults.setExternalId(externalId: response.getExternalId())
+                            completion(.success("Event successfully sent with ContloID: \(response.getExternalId())"))
+                        } else {
+                            completion(.error(response.getError()))
+                        }
+    //                    return Resource<Event>(data: jsonData)
+                    } catch {
+                        print("Error occured : \(error)")
+    //                    return Resource<Event>(throwable: error)
+                        completion(.error(ContloError.Error(value)))
+                    }
+                    
+                case .failure(let error):
+                        print("Error occured: \(error)")
+                    completion(.error(error))
+    //                return Resource<Event>(throwable: error)
+                                
+                }
+            })
+        } catch {
+            print("Error occured : \(error)")
+        }
     }
     
     
@@ -35,7 +110,8 @@ class EventHandler {
         var data: [String: String] = [
             "app_name": Utils.getAppName(),
             "app_version": Utils.getAppVersion(),
-            "time_zone": Utils.getTimezone()
+            "time_zone": Utils.getTimezone(),
+            "source": "Mobile"
         ]
         return data
     }

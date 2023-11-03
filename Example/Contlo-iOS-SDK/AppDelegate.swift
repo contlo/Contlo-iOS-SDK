@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        Contlo.initialize(apiKey: "4a0975d62f2e8625d5cba520c55717db")
+        Contlo.initialize(apiKey: "d9fa1a810ce66312beab9f86eaa3480c")
+        
         // Override point for customization after application launch.
         return true
     }

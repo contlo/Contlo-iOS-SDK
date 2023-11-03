@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct Event {
-    var eventId: UInt64
+struct Event : Codable {
+    var event_id: UInt64
     var event: String
-    var fcmToken: String?
     var email: String?
-    var phoneNumber: String?
-    var property: [String: String]
-    var pushConsent: Bool
-    var deviceEventTime: UInt64
-    var profileProperty: [String: String]?
+    var phone_number: String?
+    var external_id: String?
+    var properties: [String: String]?
+    var mobile_push_consent: Bool
+    var device_event_time: UInt64
+    var profile_properties: [String: String]?
 }
 
 //extension Event {
@@ -61,3 +61,14 @@ func generateId() -> UInt64 {
     return uuidUInt64
 }
 
+extension Event {
+    mutating func addEventProperty() {
+        var data: [String: String] = [
+            "app_name": Utils.getAppName(),
+            "app_version": Utils.getAppVersion(),
+//            "time_zone": Utils.getTimezone(),
+//            "source": "Mobile"
+        ]
+        properties?.merge(data) { (_, new) in new }
+    }
+}

@@ -94,4 +94,27 @@ class Utils {
     static func getCurrentMillis() -> Int64{
         return  Int64(NSDate().timeIntervalSince1970 * 1000)
     }
+    
+    static func retrieveUserData() -> [String: String] {
+        var data: [String: String] = [
+            "app_name": Utils.getAppName(),
+            "app_version": Utils.getAppVersion(),
+            "time_zone": Utils.getTimezone(),
+            "source": "Mobile"
+        ]
+        return data
+    }
+//    static func error(message: String) -> 
+}
+
+enum ContloError: Error {
+    case Error(String)
+
+    var localizedDescription: String {
+        switch self {
+        case .Error(let message):
+            return message
+        }
+    }
+
 }

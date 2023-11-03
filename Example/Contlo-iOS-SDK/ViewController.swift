@@ -22,6 +22,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
 //        Contlo.initialize()
 //        Contlo.sendUserData()
+     
         
     }
 
@@ -33,10 +34,26 @@ class ViewController: UIViewController {
     @IBAction func onRegister(_ sender: UIButton) {
         print("clicked")
         print(emailField.text)
+//        let audience = Audience(
+//            userEmail: emailField.text,
+//            userPhone: phoneNumberField.text,
+//            firstName: nameField.text
+//        )
+        
+        let finalAudience = Audience(
+            firstName: nameField.text,
+            userEmail: emailField.text,
+            userPhone: phoneNumberField.text
+            )
+            
+        Contlo.sendUserData(audience: finalAudience) {result in
+            print("Sending user data: \(result)")
+        }
     }
     
     @IBAction func onSkip(_ sender: UIButton) {
         print("skip")
+        Contlo.sendEvent(eventName: "Skip event")
     }
 }
 

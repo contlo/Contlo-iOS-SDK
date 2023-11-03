@@ -52,6 +52,18 @@ class ContloDefaults {
     }
     
     // MARK: - Set Defaults
+    static func setup() {
+        let defaults: [String: Any?] = [
+            Keys.NEW_APP_INSTALL: true,
+//            Keys.EXTERNAL_ID: nil,
+//            Keys.EMAIL: nil,
+//            Keys.PHONE_NUMBER: nil
+        
+        ]
+        UserDefaults.standard.register(defaults: defaults)
+        
+    }
+    
     static func setApiKey(_ apiKey: String) {
         UserDefaults.standard.set(apiKey, forKey: Keys.API_KEY)
     }
@@ -76,12 +88,16 @@ class ContloDefaults {
         UserDefaults.standard.set(appName, forKey: Keys.APP_NAME)
     }
     
-    static func setEmail(_ email: String) {
+    static func setEmail(_ email: String?) {
         UserDefaults.standard.set(email, forKey: Keys.EMAIL)
     }
     
-    static func setPhoneNumber(_ phoneNumber: String) {
+    static func setPhoneNumber(_ phoneNumber: String?) {
         UserDefaults.standard.set(phoneNumber, forKey: Keys.PHONE_NUMBER)
+    }
+    
+    static func setExternalId(externalId: String?) {
+        UserDefaults.standard.set(externalId, forKey: Keys.EXTERNAL_ID)
     }
     
     static func setNewAppInstall(_ isNewInstall: Bool) {
@@ -100,7 +116,7 @@ class ContloDefaults {
         UserDefaults.standard.set(source, forKey: Keys.SOURCE)
     }
     
-    static func setLastSyncTime(_ timestamp: TimeInterval) {
+    static func setLastSyncTime(_ timestamp: Int64) {
         UserDefaults.standard.set(timestamp, forKey: Keys.LAST_SYNC_TIME)
     }
     
@@ -166,8 +182,13 @@ class ContloDefaults {
         return UserDefaults.standard.string(forKey: Keys.PHONE_NUMBER)
     }
     
+    static func getExternalId() -> String? {
+        return UserDefaults.standard.string(forKey: Keys.EXTERNAL_ID)
+    }
+    
     static func isNewAppInstall() -> Bool {
-        return UserDefaults.standard.bool(forKey: Keys.NEW_APP_INSTALL)
+        
+        return UserDefaults.standard.bool(forKey: Keys.NEW_APP_INSTALL) ?? true
     }
     
     static func isFcmFound() -> Bool {
