@@ -12,6 +12,8 @@ class HttpClient {
     
     // Shared URLSession instance for making requests
     private let session = URLSession.shared
+    static let TAG = "LifecycleHandler"
+
     
     // Method to send a GET request with optional headers and return the response as a string
     func sendGetRequest(url: URL, headers: [String: String]? = nil, completion: @escaping (Result<String, Error>) -> Void) {
@@ -30,7 +32,8 @@ class HttpClient {
             }
             
             if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                print("config: \(responseString)")
+                Logger.sharedInstance.log(level: LogLevel.Verbose, tag: HttpClient.TAG, message: "Config fetched: \(responseString)")
+
                 completion(.success(responseString))
             } else {
                 completion(.failure(NSError(domain: "HttpClient", code: 1, userInfo: nil)))
@@ -69,7 +72,8 @@ class HttpClient {
             }
             
             guard let mime = response?.mimeType, mime == "application/json" else {
-                            print("response is not json")
+                Logger.sharedInstance.log(level: LogLevel.Verbose, tag: HttpClient.TAG, message: "Post request error: \(response)")
+                
                 completion(.failure(NSError(domain: "HttpClient", code: 1, userInfo: nil)))
 
                             return
@@ -77,9 +81,9 @@ class HttpClient {
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options: [])
-                    print("The Response is : ",json)
+                Logger.sharedInstance.log(level: LogLevel.Verbose, tag: HttpClient.TAG, message: "\(url.absoluteString) response is: \(json)")
                     } catch {
-                        print("JSON error: \(error.localizedDescription)")
+                        Logger.sharedInstance.log(level: LogLevel.Error, tag: HttpClient.TAG, message: "Post request error: \(error.localizedDescription)")
                     }
         }
         

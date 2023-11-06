@@ -73,7 +73,9 @@ class EventHandler {
         do {
             let jsonEvent = try JSONEncoder().encode(event)
         
-            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+//            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+            Logger.sharedInstance.log(level: LogLevel.Info, tag: "EventHandler", message: "Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+        
         
             httpClient.sendPostRequest(url: getEventsBaseUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
                 switch result {

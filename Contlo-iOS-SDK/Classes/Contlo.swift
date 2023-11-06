@@ -1,4 +1,5 @@
 @objc open class Contlo: NSObject {
+    static let TAG = "LifecycleHandler"
     
     open class func initialize(apiKey: String, completion: ((String) -> Void)? = nil) {
         ContloDefaults.setup()
@@ -8,9 +9,10 @@
             switch result {
             case .success(let config):
                 completion?("Contlo Initialized")
-                print("Contlo Initialized")
+                Logger.sharedInstance.log(level: LogLevel.Verbose, tag: self.TAG, message: "Contlo Initialized")
+
             case .error(_):
-                print("Failed to initialize Contlo")
+                Logger.sharedInstance.log(level: LogLevel.Warning, tag: self.TAG, message: "App Moved to foreground")
                 return
             }
         }
@@ -30,6 +32,10 @@
                 ContloDefaults.setAppVersion(Utils.getAppVersion())
             }
         }
+        
+        Logger.sharedInstance.removeAdapters()
+        Logger.sharedInstance.addAdapter(logger: DefaultLogger())
+        Logger.sharedInstance.addAdapter(logger: FileLogger())
     }
     
     open class func logout() {

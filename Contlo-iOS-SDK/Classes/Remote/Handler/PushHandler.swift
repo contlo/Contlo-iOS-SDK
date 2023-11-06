@@ -7,6 +7,7 @@
 
 import Foundation
 class PushHandler {
+    static let TAG = "LifecycleHandler"
     
     class func handlePushConsent(consent: Bool) {
         

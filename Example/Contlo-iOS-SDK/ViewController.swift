@@ -40,15 +40,15 @@ class ViewController: UIViewController {
 //            firstName: nameField.text
 //        )
         
-        let finalAudience = Audience(
-            firstName: nameField.text,
-            userEmail: emailField.text,
-            userPhone: phoneNumberField.text
-            )
+//        let finalAudience = Audience(
+//            firstName: nameField.text,
+//            userEmail: emailField.text,
+//            userPhone: phoneNumberField.text
+//            )
             
-        Contlo.sendUserData(audience: finalAudience) {result in
-            print("Sending user data: \(result)")
-        }
+//        Contlo.sendUserData(audience: finalAudience) {result in
+//            print("Sending user data: \(result)")
+//        }
     }
     
     @IBAction func onSkip(_ sender: UIButton) {

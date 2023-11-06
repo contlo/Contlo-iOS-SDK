@@ -7,6 +7,7 @@
 
 import Foundation
 class LifecycleHandler {
+    static let TAG = "LifecycleHandler"
     
     class func addObservers() {
         let notificationCenter = NotificationCenter.default
@@ -33,7 +34,7 @@ class LifecycleHandler {
     }
     
     @objc class func appMovedToForeground(notification: Notification) {
-        print("became active")
+        Logger.sharedInstance.log(level: LogLevel.Verbose, tag: self.TAG, message: "App Moved to foreground")
         EventHandler.sendAppEvent(eventName: "Mobile App Launched") { result in
             print(result)
         }
@@ -41,7 +42,7 @@ class LifecycleHandler {
     }
     
     @objc class func appMovedToBackground(notification: Notification) {
-        print("moved to background")
+        Logger.sharedInstance.log(level: LogLevel.Verbose, tag: self.TAG, message: "App Moved to background")
         EventHandler.sendAppEvent(eventName: "Mobile App Backgrounded") {result in
             print(print)
         }

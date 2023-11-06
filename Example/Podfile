@@ -1,6 +1,6 @@
 use_frameworks!
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 target 'Contlo-iOS-SDK_Example' do
   pod 'Contlo-iOS-SDK', :path => '../'
