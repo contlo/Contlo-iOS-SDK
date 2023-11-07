@@ -8,16 +8,32 @@
 import Foundation
 
 class FileLogger: LoggerType {
-    func log(level: LogLevel, tag: String, message: String) {
-        writeLogToFile("\(tag) : \(message)")
+    var LOGS_COUNT_THRESHOLD = 15
+    
+    func log(level: LogLevel, tag: String, message: String?, exception: NSException?) {
+        if let exception = exception {
+            print("wrote to file exc")
+
+            writeLogToFile("\(tag) caught exception: \(exception.name) Stack trace: \(exception.callStackSymbols)")
+        } else {
+            print("wrote to file")
+            writeLogToFile("\(tag) : \(message ?? "Some error occured")")
+        }
     }
     
     func isLoggable(level: LogLevel) -> Bool {
         return level.rawValue >= LogLevel.Debug.rawValue
     }
     func writeLogToFile(_ logText: String) {
-//        let fileURL = URL(fileURLWithPath: filePath)
-        if let documentsDirectory = getAppDocumentsDirectory() {
+        let logCount = ContloDefaults.getLoggingCount()
+        if logCount < LOGS_COUNT_THRESHOLD {
+            ContloDefaults.setLogsCount(logCount + 1)
+        } else {
+            deleteLogFile()
+            ContloDefaults.setLogsCount(0)
+        }
+
+        if let documentsDirectory = Utils.getAppDocumentsDirectory() {
             
             do {
                 let fileURL = documentsDirectory.appendingPathComponent("contlo_logs.txt")
@@ -33,12 +49,12 @@ class FileLogger: LoggerType {
                 if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
                     // Seek to the end of the file to append the log
                     fileHandle.seekToEndOfFile()
-                    
+                    var text = logText + "\n"
                     // Convert the log text to data and write it to the file
-                    if let data = logText.data(using: .utf8) {
+                    if let data = text.data(using: .utf8) {
                         fileHandle.write(data)
                     }
-                    
+                    print("wrote to file and closed")
                     // Close the file
                     fileHandle.closeFile()
                 } else {
@@ -51,14 +67,26 @@ class FileLogger: LoggerType {
         
     }
     
-    func getAppDocumentsDirectory() -> URL? {
-        do {
-            let documentsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            return documentsURL
-        } catch {
-            print("Error getting app's documents directory: \(error)")
-            return nil
+    func deleteLogFile() {
+        
+        if let documentsDirectory = Utils.getAppDocumentsDirectory() {
+            
+            do {
+                let fileURL = documentsDirectory.appendingPathComponent("contlo_logs.txt")
+                // Create a FileManager instance
+                let fileManager = FileManager.default
+                
+                // Check if the file already exists, and if not, create it
+                if fileManager.fileExists(atPath: fileURL.path) {
+                    try fileManager.removeItem(atPath: fileURL.path)
+                }
+            } catch {
+                print("Error deleting the file: \(error)")
+            }
+            
         }
     }
+    
+
     
 }

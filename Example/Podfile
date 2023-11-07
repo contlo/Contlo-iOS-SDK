@@ -8,7 +8,7 @@ target 'Contlo-iOS-SDK_Example' do
   target 'Contlo-iOS-SDK_Tests' do
     inherit! :search_paths
 
-    pod 'Quick', '~> 2.2.0'
+    pod 'Quick', '~> 5.0.1'
     pod 'Nimble', '~> 10.0.0'
   end
 end

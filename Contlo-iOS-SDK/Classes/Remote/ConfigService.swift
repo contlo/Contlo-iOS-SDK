@@ -38,7 +38,7 @@ class ConfigService {
         httpClient.sendGetRequest(url: getConfigUrl(), headers: ["X-Api-Key": apiKey]) { result in
             switch result {
             case .success(let value):
-                print("success: \(value.data(using: .utf8))")
+                Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Succesfully fetched config: \(value.data(using:.utf8))")
                 do {
                     let config = try JSONDecoder().decode(Config.self, from: value.data(using: .utf8)!)
                     completion?(.success(config))
@@ -56,9 +56,7 @@ class ConfigService {
 //                    print("Logging: \(config.logging_enabled)")
                 } catch {
                     completion?(.error(ContloError.Error("Error occured: \(error)")))
-                    print("Error occured: \(error)")
-//                    completion(.failure(NSError("Error"))
-
+                    Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: error.localizedDescription)
                 }
                 
                 

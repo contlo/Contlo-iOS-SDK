@@ -8,6 +8,7 @@
 
 import UIKit
 import Contlo_iOS_SDK
+import UIKit
 
 class ViewController: UIViewController {
     
@@ -19,11 +20,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-//        Contlo.initialize()
-//        Contlo.sendUserData()
-     
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,21 +30,24 @@ class ViewController: UIViewController {
     @IBAction func onRegister(_ sender: UIButton) {
         print("clicked")
         print(emailField.text)
-//        let audience = Audience(
-//            userEmail: emailField.text,
-//            userPhone: phoneNumberField.text,
-//            firstName: nameField.text
-//        )
-        
-//        let finalAudience = Audience(
-//            firstName: nameField.text,
-//            userEmail: emailField.text,
-//            userPhone: phoneNumberField.text
-//            )
+        let finalAudience = Audience(firstName: "Aman", userEmail: "gg@gmail.com")
             
-//        Contlo.sendUserData(audience: finalAudience) {result in
-//            print("Sending user data: \(result)")
-//        }
+        Contlo.sendUserData(audience: finalAudience) {result in
+            print("Sending user data: \(result)")
+            
+            DispatchQueue.main.async {
+               
+            }
+           
+        }
+        
+        let storyboard = UIStoryboard(name: "EventScreen", bundle: nil)
+                
+                // Instantiate the view controller from the new storyboard
+                if let destinationVC = storyboard.instantiateViewController(withIdentifier: "eventStory") as? EventViewController {
+                    // Perform the navigation (e.g., push or present)
+                    self.navigationController?.pushViewController(destinationVC, animated: true)
+                }
     }
     
     @IBAction func onSkip(_ sender: UIButton) {

@@ -59,6 +59,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="tinted" title="Skip"/>
+                                <connections>
+                                    <action selector="onSkip:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Wue-0C-CO8"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcO-Jv-ejU">
                                 <rect key="frame" x="125" y="527" width="143" height="75"/>

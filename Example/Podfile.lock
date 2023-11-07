@@ -2,7 +2,7 @@ PODS:
   - Contlo-iOS-SDK (0.1.0):
     - Sentry (~> 8.14.2)
   - Nimble (10.0.0)
-  - Quick (2.2.1)
+  - Quick (5.0.1)
   - Sentry (8.14.2):
     - Sentry/Core (= 8.14.2)
     - SentryPrivate (= 8.14.2)
@@ -13,7 +13,7 @@ PODS:
 DEPENDENCIES:
   - Contlo-iOS-SDK (from `../`)
   - Nimble (~> 10.0.0)
-  - Quick (~> 2.2.0)
+  - Quick (~> 5.0.1)
 
 SPEC REPOS:
   trunk:
@@ -27,12 +27,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Contlo-iOS-SDK: 5a3c6b582d8800a5c117af4f149f5fac1fc4bcf3
+  Contlo-iOS-SDK: 4536955b358dd4be2fafca7b13108f42a85d483c
   Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
-  Quick: f5754d69b7013f5864c29aab9ae6f0c79c5bc200
+  Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
   Sentry: e0ea366f95ebb68f26d6030d8c22d6b2e6d23dd0
   SentryPrivate: 949a21fa59872427edc73b524c3ec8456761d97f
 
-PODFILE CHECKSUM: a1ca486daf8c066e8fbcfc450e25831be8178624
+PODFILE CHECKSUM: 4daaad361ae29a729abf9fcb09ddec3f0e7bd232
 
 COCOAPODS: 1.14.2

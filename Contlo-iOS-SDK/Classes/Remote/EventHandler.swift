@@ -56,18 +56,8 @@ class EventHandler {
     
     static func sendEvent(event: Event, completion: @escaping (Resource<String>) -> Void) {
         if(event.event.isEmpty) {
-//            completion.() Resource<Event>(throwable: NSError(domain: "HttpClient", code: 1, userInfo: nil))
             completion(.error(ContloError.Error("Event Name is empty")))
         }
-//        event.event = "ada"
-//        event.addEventProperty()
-//        var data: [String: String] = [
-//            "app_name": Utils.getAppName(),
-//            "app_version": Utils.getAppVersion(),
-//            "time_zone": Utils.getTimezone(),
-//            "source": "Mobile"
-//        ]
-//        event.properties?.merge(data) { (_, new) in new }
         
         var httpClient = HttpClient()
         do {
@@ -84,7 +74,7 @@ class EventHandler {
                         let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
                         if(response.isSuccess()) {
                             ContloDefaults.setExternalId(externalId: response.getExternalId())
-                            completion(.success("Event successfully sent with ContloID: \(response.getExternalId())"))
+                            completion(.success("Event successfully sent"))
                         } else {
                             completion(.error(response.getError()))
                         }

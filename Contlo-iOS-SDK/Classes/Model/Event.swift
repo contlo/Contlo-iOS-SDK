@@ -19,35 +19,6 @@ struct Event : Codable {
     var profile_properties: [String: String]?
 }
 
-//extension Event {
-//    init(
-//        eventId: UInt64 = generateId(),
-//        event: String,
-//        fcmToken: String? = nil,
-//        email: String? = nil,
-//        phoneNumber: String? = nil,
-//        property: [String: String] = [:],
-//        pushConsent: Bool,
-//        deviceEventTime: UInt64,
-//        profileProperty: [String: String]? = nil
-//    ) {
-//        self.eventId = eventId
-//        self.event = event
-//        self.fcmToken = fcmToken
-//        self.email = email
-//        self.phoneNumber = phoneNumber
-//        self.property = property
-//        self.pushConsent = pushConsent
-//        self.deviceEventTime = deviceEventTime
-//        self.profileProperty = profileProperty
-//    }
-//    
-//    func process() {
-//        
-//    }
-//}
-
-
 func generateId() -> UInt64 {
     // Generate a random UUID as a string
     let uuidString = UUID().uuidString

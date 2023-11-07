@@ -104,7 +104,16 @@ class Utils {
         ]
         return data
     }
-//    static func error(message: String) -> 
+    
+    static func getAppDocumentsDirectory() -> URL? {
+        do {
+            let documentsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            return documentsURL
+        } catch {
+            print("Error getting app's documents directory: \(error)")
+            return nil
+        }
+    }
 }
 
 enum ContloError: Error {

@@ -7,20 +7,20 @@
 
 import Foundation
 class PushHandler {
-    static let TAG = "LifecycleHandler"
+    static let TAG = "PushHandler"
     
-    class func handlePushConsent(consent: Bool) {
+    class func handlePushConsent(consent: Bool, completion: @escaping (String) -> Void) {
         
         let previousConsent = ContloDefaults.getPushConsent()
         if(consent && !previousConsent) {
-            sendPushConsent(consent: true)
+            sendPushConsent(consent: true, completion: completion)
         } else if(!consent && previousConsent) {
-            sendPushConsent(consent: false)
+            sendPushConsent(consent: false, completion: completion)
         }
         ContloDefaults.setPushConsent(consent)
     }
     
-    class func sendPushConsent(consent: Bool) {
+    class func sendPushConsent(consent: Bool, completion: @escaping (String) -> Void) {
         
         let email = ContloDefaults.getEmail()
         let phone = ContloDefaults.getPhoneNumber()
@@ -31,7 +31,13 @@ class PushHandler {
             externalId: externalId
             )
         ProfileHandler.sendUserData(audience: audience, isUpdate: true) {result in
-            print("Push consent sent: \(result)")
+            if(result == "Succesfully sent user data to Contlo") {
+                completion("Push consent sent")
+                Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message:"Push consent sent: \(result)")
+            } else {
+                Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message:"Push consent failed to send:  \(result)")
+            }
+                
         }
     }
 }

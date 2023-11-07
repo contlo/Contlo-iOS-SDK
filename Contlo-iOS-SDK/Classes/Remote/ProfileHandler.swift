@@ -32,25 +32,25 @@ class ProfileHandler {
     static func sendUserData(audience: Audience, isUpdate: Bool, completion: @escaping (String) -> Void) {
         
         let externalId = ContloDefaults.getExternalId()
-        let advertisingId = ContloDefaults.getAdvertisingId()
+//        let advertisingId = ContloDefaults.getAdvertisingId()
         
         let devicePropery = Utils.retrieveUserData()
-        let finalAudience = Audience(
-            firstName: audience.firstName,
-            lastName: audience.lastName,
-            userCity: audience.userCity,
-            userCountry: audience.userCountry,
-            userZip: audience.userZip,
-            userEmail: audience.userEmail,
-            userPhone: audience.userPhone,
-            externalId: externalId,
-            customProperties: audience.customProperties,
-            properties: devicePropery,
-            isProfileUpdate: isUpdate,
-            isMobilePushConsent: Utils.isNotificationPermission(),
-            advertisingId: advertisingId )
-        
-        sendUserToContlo(audience: finalAudience) {result in
+//        let finalAudience = Audience(
+//            firstName: audience.firstName,
+//            lastName: audience.lastName,
+//            userCity: audience.userCity,
+//            userCountry: audience.userCountry,
+//            userZip: audience.userZip,
+//            userEmail: audience.userEmail,
+//            userPhone: audience.userPhone,
+//            externalId: externalId,
+//            customProperties: audience.customProperties,
+//            properties: devicePropery,
+//            isProfileUpdate: isUpdate,
+//            isMobilePushConsent: Utils.isNotificationPermission(),
+//            advertisingId: advertisingId )
+        audience.setup(externalId: externalId)
+        sendUserToContlo(audience: audience) {result in
             switch result {
             case .success(let value):
                 ContloDefaults.setEmail(audience.userEmail ?? nil)

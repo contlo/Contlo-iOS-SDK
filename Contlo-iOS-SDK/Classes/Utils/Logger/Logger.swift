@@ -8,7 +8,7 @@
 import Foundation
 
 protocol LoggerType {
-    func log(level: LogLevel, tag: String, message: String)
+    func log(level: LogLevel, tag: String, message: String?, exception: NSException?)
     func isLoggable(level: LogLevel) -> Bool
 }
 
@@ -30,25 +30,19 @@ final class Logger {
     func removeAdapters() {
         activeLogger.removeAll()
     }
-
-    func ignoreClass(type: AnyClass) {
-        disabledSymbols.insert("some")
-    }
-
-    func ignoreTag(tag: String) {
-        disabledSymbols.insert(tag)
-    }
-
     func log(level: LogLevel, tag: String, message: String) {
+       log(level: level, tag: tag, message: message, exception: nil)
+    }
+    func log(level: LogLevel, tag: String, exception: NSException) {
+        log(level: level, tag: tag, message: nil, exception: exception)
+    }
+    
+    private func log(level: LogLevel, tag: String, message: String?, exception: NSException?) {
 //        guard logAllowed(tag: tag, className: className) else { return }
         for logger in activeLogger {
             if(logger.isLoggable(level: level)) {
-                logger.log(level: level, tag: tag, message: message)
+                logger.log(level: level, tag: tag, message: message, exception: exception)
             }
         }
-    }
-
-    private func logAllowed(tag: String, className: String) -> Bool {
-        return !disabledSymbols.contains(className) && !disabledSymbols.contains(tag)
     }
 }

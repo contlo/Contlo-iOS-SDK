@@ -1,10 +1,11 @@
 @objc open class Contlo: NSObject {
-    static let TAG = "LifecycleHandler"
+    static let TAG = "Contlo"
     
     open class func initialize(apiKey: String, completion: ((String) -> Void)? = nil) {
         ContloDefaults.setup()
         LifecycleHandler.addObservers()
         ContloDefaults.setApiKey(apiKey)
+        
         ConfigService.fetchConfig(apiKey: apiKey) {result in
             switch result {
             case .success(let config):
@@ -36,6 +37,8 @@
         Logger.sharedInstance.removeAdapters()
         Logger.sharedInstance.addAdapter(logger: DefaultLogger())
         Logger.sharedInstance.addAdapter(logger: FileLogger())
+        Logger.sharedInstance.addAdapter(logger: RemoteLogger())
+        
     }
     
     open class func logout() {
@@ -54,7 +57,7 @@
         EventHandler.sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: profileProperty, completion: completion)
     }
     
-    open class func sendPushConsent(consent: Bool) {
-        
+    open class func sendPushConsent(consent: Bool, completion: @escaping (String) -> Void) {
+        PushHandler.sendPushConsent(consent: consent, completion: completion)
     }
 }
