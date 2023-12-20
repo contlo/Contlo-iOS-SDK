@@ -8,6 +8,7 @@
 import Foundation
 struct Response: Decodable {
     var success: Bool?
+    var status: String?
     var error: String?
     var external_id: String?
     
@@ -16,6 +17,10 @@ struct Response: Decodable {
 extension Response {
     func isSuccess() -> Bool {
         return self.success ?? false
+    }
+    
+    func isStatusSuccess() -> Bool {
+        return self.status == "ok"
     }
     
     func getError() -> Error {

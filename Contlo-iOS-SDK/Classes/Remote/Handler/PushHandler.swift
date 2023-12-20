@@ -20,7 +20,7 @@ class PushHandler {
         ContloDefaults.setPushConsent(consent)
     }
     
-    class func sendPushConsent(consent: Bool, completion: @escaping (String) -> Void) {
+    class func sendPushConsent(consent: Bool, apnsToken: String? = nil, completion: @escaping (String) -> Void) {
         
         let email = ContloDefaults.getEmail()
         let phone = ContloDefaults.getPhoneNumber()
@@ -28,7 +28,9 @@ class PushHandler {
         let audience = Audience(
             userEmail: email,
             userPhone: phone,
-            externalId: externalId
+            externalId: externalId,
+            apnsToken: apnsToken,
+            isMobilePushConsent: consent
             )
         ProfileHandler.sendUserData(audience: audience, isUpdate: true) {result in
             if(result == "Succesfully sent user data to Contlo") {

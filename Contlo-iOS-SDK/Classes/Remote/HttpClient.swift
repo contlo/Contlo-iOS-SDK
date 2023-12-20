@@ -48,6 +48,11 @@ class HttpClient {
     func sendPostRequest(url: URL, data: String, completion: @escaping (Result<String, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        if Thread.isMainThread {
+            print("Running on the main thread")
+        } else {
+            print("Running on a background thread")
+        }
         
         request.addGlobalHeader()
 //        addGlobalHeader(request: request)

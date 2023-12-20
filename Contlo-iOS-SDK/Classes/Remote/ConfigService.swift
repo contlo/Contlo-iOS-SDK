@@ -16,6 +16,7 @@ class ConfigService {
     
     static func getConfigUrl() -> URL {
         return URL(string: (CONTLO_MARKETING_STAGING + CONFIG_ENDPOINT))!
+//        return URL(string: (CONTLO_MARKETING + CONFIG_ENDPOINT))!
     }
     
     static func checkForConfig(apiKey: String, completion: ((Resource<Config>) -> Void)? = nil) {
@@ -34,35 +35,36 @@ class ConfigService {
     
     static func fetchConfig(apiKey: String, completion: ((Resource<Config>) -> Void)? = nil) {
         let httpClient = HttpClient()
-        
-        httpClient.sendGetRequest(url: getConfigUrl(), headers: ["X-Api-Key": apiKey]) { result in
-            switch result {
-            case .success(let value):
-                Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Succesfully fetched config: \(value.data(using:.utf8))")
-                do {
-                    let config = try JSONDecoder().decode(Config.self, from: value.data(using: .utf8)!)
-                    completion?(.success(config))
-                    ContloDefaults.setConfigTimeframe(config.sync_timeframe)
-                    ContloDefaults.setLastSyncTime(Utils.getCurrentMillis())
-                    ContloDefaults.setRemoteLogging(config.logging_enabled)
-                    var logLevel = config.log_level
-                    if(config.log_level == 0) {
-                        logLevel = 5
+        DispatchQueue.global(qos: .background).async {
+            httpClient.sendGetRequest(url: getConfigUrl(), headers: ["X-Api-Key": apiKey]) { result in
+                switch result {
+                case .success(let value):
+                    Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Succesfully fetched config: \(value.data(using:.utf8))")
+                    do {
+                        let config = try JSONDecoder().decode(Config.self, from: value.data(using: .utf8)!)
+                        completion?(.success(config))
+                        ContloDefaults.setConfigTimeframe(config.sync_timeframe)
+                        ContloDefaults.setLastSyncTime(Utils.getCurrentMillis())
+                        ContloDefaults.setRemoteLogging(config.logging_enabled)
+                        var logLevel = config.log_level
+                        if(config.log_level == 0) {
+                            logLevel = 5
+                        }
+                        ContloDefaults.setRemoteLoggingLevel(logLevel)
+                        ContloDefaults.setBrandIconInNotification(config.notification_brand_icon)
+                        ContloDefaults.setLogoUrl(config.logo_url ?? "")
+    //                    completion(.success("Success"))
+    //                    print("Logging: \(config.logging_enabled)")
+                    } catch {
+                        completion?(.error(ContloError.Error("Error occured: \(error)")))
+                        Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: error.localizedDescription)
                     }
-                    ContloDefaults.setRemoteLoggingLevel(logLevel)
-                    ContloDefaults.setBrandIconInNotification(config.notification_brand_icon)
-                    ContloDefaults.setLogoUrl(config.logo_url ?? "")
-//                    completion(.success("Success"))
-//                    print("Logging: \(config.logging_enabled)")
-                } catch {
+                    
+                    
+                case .failure(let error):
                     completion?(.error(ContloError.Error("Error occured: \(error)")))
-                    Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: error.localizedDescription)
+                    print("error")
                 }
-                
-                
-            case .failure(let error):
-                completion?(.error(ContloError.Error("Error occured: \(error)")))
-                print("error")
             }
         }
     }

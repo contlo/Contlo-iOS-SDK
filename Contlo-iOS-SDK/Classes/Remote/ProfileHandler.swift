@@ -15,6 +15,7 @@ class ProfileHandler {
     
     private static func getProfileBaseUrl() -> URL {
         return URL(string: CONTLO_STAGING + PROFILE_V2)!
+//        return URL(string: CONTLO_PROD + PROFILE_V2)!
     }
     
 //    static func sendUserData(email: String? = nil, phoneNumber: String? = nil, firstName: String? = nil, lastName: String? = nil,
@@ -32,6 +33,8 @@ class ProfileHandler {
     static func sendUserData(audience: Audience, isUpdate: Bool, completion: @escaping (String) -> Void) {
         
         let externalId = ContloDefaults.getExternalId()
+        let apnsToken = ContloDefaults.getDeviceToken()
+        let pushConsent = ContloDefaults.isNotificationEnabled()
 //        let advertisingId = ContloDefaults.getAdvertisingId()
         
         let devicePropery = Utils.retrieveUserData()
@@ -49,7 +52,7 @@ class ProfileHandler {
 //            isProfileUpdate: isUpdate,
 //            isMobilePushConsent: Utils.isNotificationPermission(),
 //            advertisingId: advertisingId )
-        audience.setup(externalId: externalId)
+        audience.setup(externalId: externalId, apnsToken: apnsToken, pushConsent: pushConsent, data: devicePropery)
         sendUserToContlo(audience: audience) {result in
             switch result {
             case .success(let value):
@@ -68,38 +71,41 @@ class ProfileHandler {
         
         
         var httpClient = HttpClient()
-        do {
-            let jsonAudience = try JSONEncoder().encode(audience)
-        
-            print("Sending audience payload: \(String(data: jsonAudience, encoding: .utf8))")
-        
-            httpClient.sendPostRequest(url: getProfileBaseUrl(), data: String(data: jsonAudience, encoding: .utf8)!, completion: { result in
-                switch result {
-                case .success(let value):
-                    do {
-                        let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
-                        if(response.isSuccess()) {
-//                            ContloDefaults.setExternalId(externalId: response.getExternalId())
-                            completion(.success("Profile successfully sent with ContloID: \(response.getExternalId())"))
-                        } else {
-                            completion(.error(response.getError()))
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let jsonAudience = try JSONEncoder().encode(audience)
+            
+                print("Sending audience payload: \(String(data: jsonAudience, encoding: .utf8))")
+            
+                httpClient.sendPostRequest(url: getProfileBaseUrl(), data: String(data: jsonAudience, encoding: .utf8)!, completion: { result in
+                    switch result {
+                    case .success(let value):
+                        do {
+                            let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
+                            if(response.isSuccess()) {
+    //                            ContloDefaults.setExternalId(externalId: response.getExternalId())
+                                completion(.success("Profile successfully sent with ContloID: \(response.getExternalId())"))
+                            } else {
+                                completion(.error(response.getError()))
+                            }
+        //                    return Resource<Event>(data: jsonData)
+                        } catch {
+                            print("Error occured : \(error)")
+        //                    return Resource<Event>(throwable: error)
+                            completion(.error(ContloError.Error(value)))
                         }
-    //                    return Resource<Event>(data: jsonData)
-                    } catch {
-                        print("Error occured : \(error)")
-    //                    return Resource<Event>(throwable: error)
-                        completion(.error(ContloError.Error(value)))
+                        
+                    case .failure(let error):
+                            print("Error occured: \(error)")
+                        completion(.error(error))
+        //                return Resource<Event>(throwable: error)
+                                    
                     }
-                    
-                case .failure(let error):
-                        print("Error occured: \(error)")
-                    completion(.error(error))
-    //                return Resource<Event>(throwable: error)
-                                
-                }
-            })
-        } catch {
-            print("Error occured : \(error)")
+                })
+            } catch {
+                print("Error occured : \(error)")
+            }
         }
+        
     }
 }

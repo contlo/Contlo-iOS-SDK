@@ -7,20 +7,39 @@
 //
 
 import UIKit
+import UserNotifications
 import Contlo_iOS_SDK
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        Contlo.initialize(apiKey: "d9fa1a810ce66312beab9f86eaa3480c")
-        
+        Contlo.initialize(apiKey: "1d46528dc635992b494ffb8961f653be")
+        registerForPushNotifications()
+        notification()
         // Override point for customization after application launch.
         return true
+    }
+    
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Did register for remote notification")
+        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+        let token = tokenParts.joined()
+        print("Device Token: \(token)")
+        Contlo.sendDeviceToken(token: token)
+        print("Device Token real : \(deviceToken)")
+        
+        // Register the device token with Pinpoint as the endpoint for this user
+//        pinpoint!.notificationManager.interceptDidRegisterForRemoteNotifications(withDeviceToken: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("APNs registration failed: \(error)")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -43,6 +62,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options:
+                                                                    [.alert, .badge, .sound]){(granted, error) in
+            print("Permission Granted: \(granted)")
+            
+            // 1. Check if permission granted
+            guard granted else { return }
+            Contlo.setNotificationPermission(granted: true)
+            // 2. Attempt registration for remote notifications on the main thread
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+        
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let notification = response.notification
+        let userInfo = notification.request.content.userInfo
+        let actionIdentifier = response.actionIdentifier
+
+        // Check for a specific custom key in the userInfo dictionary
+        if let customValue = userInfo["internal_id"] as? String {
+            print("Received notification with custom value: \(customValue)")
+            CallbackService.sendNotificationClick(internalId: customValue)
+        }
+
+        // Handle the tapped notification and perform actions based on the identifier
+        if actionIdentifier == UNNotificationDefaultActionIdentifier {
+            // The default action (tapping the notification body)
+            print("Tapped on the notification body")
+        } else {
+            // Handle custom actions if applicable
+            print("Tapped on a custom action with identifier: \(actionIdentifier)")
+        }
+
+        // Call the completion handler when done processing the response
+        completionHandler()
+    }
+    
+    func notification() {
+//        let notification = UNUserNotificationCenter.current()
+//        let button1Action = UNNotificationAction(identifier: "Shop now", title: "Button 1", options: [])
+//        let button2Action = UNNotificationAction(identifier: "Cancel", title: "Button 2", options: [])
+//
+//        let category = UNNotificationCategory(identifier: "Contlo", actions: [button1Action, button2Action], intentIdentifiers: [], options: [])
+//
+//        UNUserNotificationCenter.current().setNotificationCategories([category])
     }
 
 

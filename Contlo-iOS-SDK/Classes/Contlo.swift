@@ -1,9 +1,9 @@
 @objc open class Contlo: NSObject {
     static let TAG = "Contlo"
+    let consentOnHold = false
     
-    open class func initialize(apiKey: String, completion: ((String) -> Void)? = nil) {
+   @objc open class func initialize(apiKey: String, completion: ((String) -> Void)? = nil) {
         ContloDefaults.setup()
-        LifecycleHandler.addObservers()
         ContloDefaults.setApiKey(apiKey)
         
         ConfigService.fetchConfig(apiKey: apiKey) {result in
@@ -20,18 +20,24 @@
         if(ContloDefaults.isNewAppInstall()) {
             EventHandler.sendAppEvent(eventName: "Mobile App Installed") { result in
                 print(result)
+                if(ContloDefaults.isConsentOnHold() && ContloDefaults.getDeviceToken() != nil) {
+                    sendDeviceToken(token: ContloDefaults.getDeviceToken()!)
+                }
                 ContloDefaults.setNewAppInstall(false)
+                ContloDefaults.setAppVersion(Utils.getAppVersion())
+                LifecycleHandler.addObservers()
             }
             // Send new app install event
         } else {
             // Check for app update
-        }
-        let appVersion = ContloDefaults.getAppVersion()
-        if(appVersion != Utils.getAppVersion()) {
-            EventHandler.sendAppEvent(eventName: "Mobile App Updated") { result in
-                print(result)
-                ContloDefaults.setAppVersion(Utils.getAppVersion())
+            let appVersion = ContloDefaults.getAppVersion()
+            if(appVersion != Utils.getAppVersion()) {
+                EventHandler.sendAppEvent(eventName: "Mobile App Updated") { result in
+                    print(result)
+                    ContloDefaults.setAppVersion(Utils.getAppVersion())
+                }
             }
+            LifecycleHandler.addObservers()
         }
         
         Logger.sharedInstance.removeAdapters()
@@ -41,15 +47,19 @@
         
     }
     
-    open class func logout() {
+    @objc open class func logout() {
         ContloDefaults.clear()
     }
     
-    open class func sendUserData(audience: Audience, isUpdate: Bool = false, completion: @escaping (String) -> Void) {
+    @objc open class func sendUserData(audience: Audience, isUpdate: Bool = false, completion: @escaping (String) -> Void) {
+        
+        if(audience.userEmail == nil && audience.userPhone == nil) {
+            completion("Either Email or Phone is mandatory")
+        }
         ProfileHandler.sendUserData(audience: audience, isUpdate: isUpdate, completion: completion)
     }
     
-    open class func sendEvent(eventName: String, eventProperty: [String: String]? = nil, profileProperty: [String: String]? = nil, completion: ((String) -> Void)? = nil) {
+    @objc open class func sendEvent(eventName: String, eventProperty: [String: String]? = nil, profileProperty: [String: String]? = nil, completion: ((String) -> Void)? = nil) {
         if(eventName.isEmpty) {
             completion?("Event name cannot be empty")
             return
@@ -57,7 +67,25 @@
         EventHandler.sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: profileProperty, completion: completion)
     }
     
-    open class func sendPushConsent(consent: Bool, completion: @escaping (String) -> Void) {
+    @objc open class func sendPushConsent(consent: Bool, completion: @escaping (String) -> Void) {
         PushHandler.sendPushConsent(consent: consent, completion: completion)
+    }
+    
+    @objc open class func setNotificationPermission(granted: Bool) {
+        ContloDefaults.setNotificationEnabled(granted)
+    }
+    
+    @objc open class func sendDeviceToken(token: String) {
+         let externalId = ContloDefaults.getExternalId()
+        ContloDefaults.setDeviceToken(token)
+        if(externalId == nil) {
+            ContloDefaults.setConsentOnHold(true)
+            return
+        }
+        if(!token.isEmpty) {
+            sendPushConsent(consent: true) {_ in 
+                Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Successfully sent APNS Token")
+            }
+        }
     }
 }

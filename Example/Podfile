@@ -1,3 +1,4 @@
+# Uncomment the next line to define a global platform for your project
 use_frameworks!
 
 platform :ios, '11.0'
@@ -7,8 +8,25 @@ target 'Contlo-iOS-SDK_Example' do
 
   target 'Contlo-iOS-SDK_Tests' do
     inherit! :search_paths
-
+  # Pods for NotificationService
     pod 'Quick', '~> 5.0.1'
     pod 'Nimble', '~> 10.0.0'
   end
+end
+
+target 'NotificationContent' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  
+  # Pods for NotificationContent
+
+end
+
+target 'NotificationService' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  pod 'Contlo-iOS-SDK', :path => '../'
+  # Pods for NotificationService
+
+
 end

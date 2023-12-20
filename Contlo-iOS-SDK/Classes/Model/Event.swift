@@ -11,6 +11,7 @@ struct Event : Codable {
     var event_id: UInt64
     var event: String
     var email: String?
+    var apns_token: String?
     var phone_number: String?
     var external_id: String?
     var properties: [String: String]?
@@ -38,8 +39,12 @@ extension Event {
             "app_name": Utils.getAppName(),
             "app_version": Utils.getAppVersion(),
 //            "time_zone": Utils.getTimezone(),
-//            "source": "Mobile"
+            "source": "Mobile"
         ]
-        properties?.merge(data) { (_, new) in new }
+        if(properties != nil) {
+            properties?.merge(data) { (_, new) in new }
+        } else {
+            properties = data
+        }
     }
 }

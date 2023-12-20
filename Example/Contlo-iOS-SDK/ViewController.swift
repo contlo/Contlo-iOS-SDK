@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     @IBAction func onRegister(_ sender: UIButton) {
         print("clicked")
         print(emailField.text)
-        let finalAudience = Audience(firstName: "Aman", userEmail: "gg@gmail.com")
+        let finalAudience = Audience(firstName: nameField.text, userEmail: emailField.text, userPhone: phoneNumberField.text)
             
         Contlo.sendUserData(audience: finalAudience) {result in
             print("Sending user data: \(result)")
@@ -52,6 +52,15 @@ class ViewController: UIViewController {
     
     @IBAction func onSkip(_ sender: UIButton) {
         print("skip")
+        let storyboard = UIStoryboard(name: "EventScreen", bundle: nil)
+                
+                // Instantiate the view controller from the new storyboard
+                if let destinationVC = storyboard.instantiateViewController(withIdentifier: "eventStory") as? EventViewController {
+                    // Perform the navigation (e.g., push or present)
+//                    self.navigationController?.pushViewController(destinationVC, animated: true)
+                    self.present(destinationVC, animated: true, completion: nil)
+
+                }
         Contlo.sendEvent(eventName: "Skip event")
     }
 }

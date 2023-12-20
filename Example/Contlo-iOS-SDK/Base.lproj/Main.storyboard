@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,17 +19,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22e-il-5KI">
-                                <rect key="frame" x="89.666666666666686" y="192" width="219" height="46"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Register User">
-                                        <attributes>
-                                            <font key="NSFont" metaFont="system" size="38"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcO-Jv-ejU">
+                                <rect key="frame" x="125" y="169" width="143" height="75"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Register"/>
+                                <connections>
+                                    <action selector="onRegister:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gcu-Xp-d35"/>
+                                </connections>
+                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email (required)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="09D-o9-nkv" userLabel="Email">
                                 <rect key="frame" x="37" y="295" width="324" height="34"/>
                                 <accessibility key="accessibilityConfiguration" hint="Email (required)" label="Email">
@@ -63,15 +61,6 @@
                                     <action selector="onSkip:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Wue-0C-CO8"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcO-Jv-ejU">
-                                <rect key="frame" x="125" y="527" width="143" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Register"/>
-                                <connections>
-                                    <action selector="onRegister:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gcu-Xp-d35"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -82,8 +71,6 @@
                             <constraint firstItem="09D-o9-nkv" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lmi-tC-npu" secondAttribute="trailing" id="WA2-v9-j9D"/>
                             <constraint firstItem="09D-o9-nkv" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="F8z-1l-OhX" secondAttribute="trailing" id="YBI-XK-WnO"/>
                             <constraint firstItem="09D-o9-nkv" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="295" id="a42-2s-FKx"/>
-                            <constraint firstItem="09D-o9-nkv" firstAttribute="centerX" secondItem="22e-il-5KI" secondAttribute="centerX" id="bEN-5e-BGy"/>
-                            <constraint firstItem="09D-o9-nkv" firstAttribute="top" secondItem="22e-il-5KI" secondAttribute="bottom" constant="57" id="dY1-xv-adB"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="09D-o9-nkv" secondAttribute="trailing" id="gAK-dz-ibV"/>
                             <constraint firstItem="lmi-tC-npu" firstAttribute="trailing" secondItem="F8z-1l-OhX" secondAttribute="trailing" id="hjU-dZ-Oqj"/>
                             <constraint firstItem="09D-o9-nkv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="F8z-1l-OhX" secondAttribute="leading" id="ipU-bq-1b9"/>

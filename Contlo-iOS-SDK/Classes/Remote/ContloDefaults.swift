@@ -15,7 +15,7 @@ class ContloDefaults {
         static let EMAIL = "email"
         static let PHONE_NUMBER = "phone_number"
         static let API_KEY = "API_KEY"
-        static let FCM_TOKEN = "FCM_TOKEN"
+        static let APNS_TOKEN = "APNS_TOKEN"
         static let MOBILE_PUSH_CONSENT = "MOBILE_PUSH_CONSENT"
         static let AD_ID = "AD_ID"
         static let PACKAGE_NAME = "package_name"
@@ -44,6 +44,8 @@ class ContloDefaults {
         static let LOGS_COUNT = "LOGS_COUNT"
         static let EVENT_TYPE = "event_type"
         static let LOGO_URL = "LOGO_URL"
+        static let IS_NOTIFICATION_ENABLED = "IS_NOTIFICATION_ENABLED"
+        static let IS_CONSENT_ONHOLD = "IS_CONSENT_ONHOLD"
 
         static let LOGS_COUNT_THRESHOLD = 10
         static let SOME_ERROR_OCCURRED = "Some error occured"
@@ -55,21 +57,24 @@ class ContloDefaults {
     static func setup() {
         let defaults: [String: Any?] = [
             Keys.NEW_APP_INSTALL: true,
-//            Keys.EXTERNAL_ID: nil,
+            //Keys.EXTERNAL_ID: nil,
 //            Keys.EMAIL: nil,
 //            Keys.PHONE_NUMBER: nil
         
         ]
         UserDefaults.standard.register(defaults: defaults)
         
+        Utils.isNotificationPermission() { permission in
+            setNotificationEnabled(permission)
+        }
     }
     
     static func setApiKey(_ apiKey: String) {
         UserDefaults.standard.set(apiKey, forKey: Keys.API_KEY)
     }
     
-    static func setFcmKey(_ fcmKey: String) {
-        UserDefaults.standard.set(fcmKey, forKey: Keys.FCM_TOKEN)
+    static func setDeviceToken(_ apnsKey: String) {
+        UserDefaults.standard.set(apnsKey, forKey: Keys.APNS_TOKEN)
     }
     
     static func setPushConsent(_ consent: Bool) {
@@ -144,6 +149,14 @@ class ContloDefaults {
         UserDefaults.standard.set(isEnabled, forKey: Keys.RELEASE_BUILD_LOGGING)
     }
     
+    static func setNotificationEnabled(_ isEnabled: Bool) {
+        UserDefaults.standard.set(isEnabled, forKey: Keys.IS_NOTIFICATION_ENABLED)
+    }
+    
+    static func setConsentOnHold(_ isOnHold: Bool) {
+        UserDefaults.standard.set(isOnHold, forKey: Keys.IS_CONSENT_ONHOLD)
+    }
+    
     static func setLogoUrl(_ url: String) {
         UserDefaults.standard.set(url, forKey: Keys.LOGO_URL)
     }
@@ -154,8 +167,8 @@ class ContloDefaults {
         return UserDefaults.standard.string(forKey: Keys.API_KEY)
     }
     
-    static func getFcmKey() -> String? {
-        return UserDefaults.standard.string(forKey: Keys.FCM_TOKEN)
+    static func getDeviceToken() -> String? {
+        return UserDefaults.standard.string(forKey: Keys.APNS_TOKEN)
     }
     
     static func getPushConsent() -> Bool {
@@ -229,6 +242,14 @@ class ContloDefaults {
     
     static func isLoggingForReleaseBuild() -> Bool {
         return UserDefaults.standard.bool(forKey: Keys.RELEASE_BUILD_LOGGING)
+    }
+    
+    static func isNotificationEnabled() -> Bool {
+        return UserDefaults.standard.bool(forKey: Keys.IS_NOTIFICATION_ENABLED)
+    }
+    
+    static func isConsentOnHold() -> Bool {
+        return UserDefaults.standard.bool(forKey: Keys.IS_CONSENT_ONHOLD)
     }
     
     static func getLogoUrl() -> String? {

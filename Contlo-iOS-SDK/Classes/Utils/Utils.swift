@@ -12,10 +12,44 @@ import UIKit
 
 class Utils {
     
-    static func isNotificationPermission() -> Bool {
+    static func isNotificationPermission(completion: @escaping (Bool) -> Void) {
+        let center = UNUserNotificationCenter.current()
+        var permission = false
+        center.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .authorized:
+                permission = true
+                break
+            case .denied:
+                permission = false
+                break;
+            case .notDetermined:
+                permission = false
+                break;
+//                    print("Notification permissions are not determined. You should request permission.")
+            case .provisional:
+                permission = true
+                break
+//                    print("Notifications are provisionally authorized.")
+            case .ephemeral:
+                permission = false
+                break
+            @unknown default:
+                permission = false
+                break
+            }
+            completion(permission)
+        }
+    }
+    
+    @available(iOS 13.0.0, *)
+    static func isNotificationPermission() async -> Bool {
         let center = UNUserNotificationCenter.current()
             var permission = false
-            center.getNotificationSettings { settings in
+            
+        
+        
+            await center.getNotificationSettings { settings in
                 switch settings.authorizationStatus {
                 case .authorized:
                     permission = true
@@ -99,8 +133,11 @@ class Utils {
         var data: [String: String] = [
             "app_name": Utils.getAppName(),
             "app_version": Utils.getAppVersion(),
-            "time_zone": Utils.getTimezone(),
-            "source": "Mobile"
+            "source": "Mobile",
+            "manufacturer": "Apple",
+            "os_type": "iOS",
+            "sdk_version": "1.0.0",
+            "package_name": Utils.getAppName()
         ]
         return data
     }

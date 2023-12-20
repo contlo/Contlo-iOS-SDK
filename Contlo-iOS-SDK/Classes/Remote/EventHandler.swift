@@ -15,6 +15,7 @@ class EventHandler {
     
     private static func getEventsBaseUrl() -> URL {
         return URL(string: CONTLO_STAGING + EVENTS_V2)!
+//        return URL(string: CONTLO_PROD + EVENTS_V2)!
 //        return CONTLO_PROD + EVENTS_V2
     }
     
@@ -22,7 +23,10 @@ class EventHandler {
         let eventProperty: [String: String] = [
             "event_type": "system"
         ]
-        sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: nil, completion: completion)
+        let profileProperty: [String: String] = [
+            "source": "Mobile"
+        ]
+        sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: profileProperty, completion: completion)
     }
     
     static func sendEvent(eventName: String, completion: @escaping (String) -> Void ) {
@@ -39,9 +43,20 @@ class EventHandler {
         let email = ContloDefaults.getEmail()
         let phone = ContloDefaults.getPhoneNumber() ?? nil
         let externalId = ContloDefaults.getExternalId() ?? nil
+        let deviceToken = ContloDefaults.getDeviceToken() ?? nil
+        let notificationPermission = ContloDefaults.isNotificationEnabled()
         let finalEventName = eventName.replacingOccurrences(of: " ", with: "_")
 
-        var event = Event(event_id: generateId(), event: finalEventName, email: email, phone_number: phone, external_id: externalId, properties: [:], mobile_push_consent: Utils.isNotificationPermission() ,device_event_time: UInt64(Utils.getCurrentMillis()), profile_properties: [:])
+        var event = Event(event_id: generateId(), 
+                          event: finalEventName,
+                          email: email,
+                          apns_token: deviceToken,
+                          phone_number: phone,
+                          external_id: externalId,
+                          properties: eventProperty,
+                          mobile_push_consent: notificationPermission,
+                          device_event_time: UInt64(Utils.getCurrentMillis()),
+                          profile_properties: profileProperty)
         event.addEventProperty()
         sendEvent(event: event) { result in
             switch result {
@@ -60,40 +75,42 @@ class EventHandler {
         }
         
         var httpClient = HttpClient()
-        do {
-            let jsonEvent = try JSONEncoder().encode(event)
-        
-//            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
-            Logger.sharedInstance.log(level: LogLevel.Info, tag: "EventHandler", message: "Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
-        
-        
-            httpClient.sendPostRequest(url: getEventsBaseUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
-                switch result {
-                case .success(let value):
-                    do {
-                        let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
-                        if(response.isSuccess()) {
-                            ContloDefaults.setExternalId(externalId: response.getExternalId())
-                            completion(.success("Event successfully sent"))
-                        } else {
-                            completion(.error(response.getError()))
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let jsonEvent = try JSONEncoder().encode(event)
+            
+    //            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+                Logger.sharedInstance.log(level: LogLevel.Info, tag: "EventHandler", message: "Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+            
+            
+                httpClient.sendPostRequest(url: getEventsBaseUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
+                    switch result {
+                    case .success(let value):
+                        do {
+                            let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
+                            if(response.isSuccess()) {
+                                ContloDefaults.setExternalId(externalId: response.getExternalId())
+                                completion(.success("Event successfully sent"))
+                            } else {
+                                completion(.error(response.getError()))
+                            }
+        //                    return Resource<Event>(data: jsonData)
+                        } catch {
+                            print("Error occured : \(error)")
+        //                    return Resource<Event>(throwable: error)
+                            completion(.error(ContloError.Error(value)))
                         }
-    //                    return Resource<Event>(data: jsonData)
-                    } catch {
-                        print("Error occured : \(error)")
-    //                    return Resource<Event>(throwable: error)
-                        completion(.error(ContloError.Error(value)))
+                        
+                    case .failure(let error):
+                            print("Error occured: \(error)")
+                        completion(.error(error))
+        //                return Resource<Event>(throwable: error)
+                                    
                     }
-                    
-                case .failure(let error):
-                        print("Error occured: \(error)")
-                    completion(.error(error))
-    //                return Resource<Event>(throwable: error)
-                                
-                }
-            })
-        } catch {
-            print("Error occured : \(error)")
+                })
+            } catch {
+                print("Error occured : \(error)")
+            }
         }
     }
     
