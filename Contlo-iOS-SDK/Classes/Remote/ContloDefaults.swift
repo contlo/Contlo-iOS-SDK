@@ -46,6 +46,7 @@ class ContloDefaults {
         static let LOGO_URL = "LOGO_URL"
         static let IS_NOTIFICATION_ENABLED = "IS_NOTIFICATION_ENABLED"
         static let IS_CONSENT_ONHOLD = "IS_CONSENT_ONHOLD"
+        static let LAST_SYSTEM_EVENT = "LAST_SYSTEM_EVENT"
 
         static let LOGS_COUNT_THRESHOLD = 10
         static let SOME_ERROR_OCCURRED = "Some error occured"
@@ -161,6 +162,10 @@ class ContloDefaults {
         UserDefaults.standard.set(url, forKey: Keys.LOGO_URL)
     }
     
+    static func setLastSystemEvent(_ event: String) {
+        UserDefaults.standard.set(event, forKey: Keys.LAST_SYSTEM_EVENT)
+    }
+    
     // MARK: - Get Defaults
     
     static func getApiKey() -> String? {
@@ -254,6 +259,10 @@ class ContloDefaults {
     
     static func getLogoUrl() -> String? {
         return UserDefaults.standard.string(forKey: Keys.LOGO_URL)
+    }
+    
+    static func getLastSystemEvent() -> String? {
+        return UserDefaults.standard.string(forKey: Keys.LAST_SYSTEM_EVENT)
     }
     // MARK: - Synchronize Defaults
     

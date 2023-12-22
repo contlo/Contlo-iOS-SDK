@@ -20,13 +20,21 @@ class EventHandler {
     }
     
     static func sendAppEvent(eventName: String, completion: @escaping (String) -> Void) {
+        if(isSameLastSystemEvent(current: eventName)) {
+            return
+        }
         let eventProperty: [String: String] = [
             "event_type": "system"
         ]
         let profileProperty: [String: String] = [
             "source": "Mobile"
         ]
+        ContloDefaults.setLastSystemEvent(eventName)
         sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: profileProperty, completion: completion)
+    }
+    
+    static func isSameLastSystemEvent(current: String) -> Bool {
+        return current == ContloDefaults.getLastSystemEvent()
     }
     
     static func sendEvent(eventName: String, completion: @escaping (String) -> Void ) {
