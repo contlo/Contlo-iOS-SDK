@@ -19,23 +19,9 @@ class NotificationService: UNNotificationServiceExtension {
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        
-//        var button1 = request.content.userInfo["ctaTitle1"] as? String
-//        if button1 != nil {
-//            let action1 = UNNotificationAction(identifier: "Action1", title: button1 ?? "gg", options: [])
-//            let category = UNNotificationCategory(
-//                identifier: "Contlo",
-//                actions: [action1],
-//                intentIdentifiers: [],
-//                options: []
-//            )
-//            UNUserNotificationCenter.current().setNotificationCategories([category])
-//        }
 
         
         if let bestAttemptContent = bestAttemptContent {
-            // Modify the notification content here...
-//            bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
             var primaryUrl:String? = nil
             if let primaryUrlString = request.content.userInfo["primary_url"] as? String {
                 primaryUrl = primaryUrlString
@@ -48,12 +34,10 @@ class NotificationService: UNNotificationServiceExtension {
             
             var internalId:String? = nil
             if let internalIdString = request.content.userInfo["internal_id"] as? String {
+                CallbackService.sendNotificationReceive(internalId: internalIdString)
+
                 internalId = internalIdString
             }
-            
-            
-            
-            CallbackService.sendNotificationReceive(internalId: internalId ?? "")
             
             if urlString != nil, let fileUrl = URL(string: urlString!) {
                 print("fileUrl: \(fileUrl)")

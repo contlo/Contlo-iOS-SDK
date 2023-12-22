@@ -30,6 +30,12 @@ class LifecycleHandler {
             
             self.appMovedToBackground(notification: notification)
         }
+        
+        notificationCenter.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: nil) {
+            [self] (notification) in
+            
+            self.appMovedToBackground(notification: notification)
+        }
     }
     
     @objc func handleNotificationResponse(_ notification: Notification) {
@@ -75,8 +81,17 @@ class LifecycleHandler {
            }
        }
     
+    class func appToBeTerminated(notification: Notification) {
+        EventHandler.sendAppEvent(eventName: "Mobile App Terminated") { result in
+            print(result)
+        }
+    }
+    
     @objc class func appMovedToForeground(notification: Notification) {
         Logger.sharedInstance.log(level: LogLevel.Verbose, tag: self.TAG, message: "App Moved to foreground")
+        Utils.isNotificationPermission() { permission in
+            ContloDefaults.setNotificationEnabled(permission)
+        }
         EventHandler.sendAppEvent(eventName: "Mobile App Launched") { result in
             print(result)
         }

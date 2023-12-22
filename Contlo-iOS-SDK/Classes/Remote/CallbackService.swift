@@ -10,12 +10,17 @@ open class CallbackService {
     static let CONTLO_PRODUCTION = "https://callback-service.contlo.com"
     static let CONTLO_STAGING = "https://callback-staging2.contlo.in"
     static let NOTIFICATION_CLICK_ENDPOINT = "/mobilepush_webhooks/mobilepush_click"
+    static let NOTIFICATION_RECEIVE_ENDPOINT = "/mobilepush_webhooks/mobilepush_receive"
     static let TAG = "CallbackService"
 
     private static func getClickCallbackUrl() -> URL {
 //        return URL(string: CONTLO_PRODUCTION + NOTIFICATION_CLICK_ENDPOINT)!
         return URL(string: CONTLO_STAGING + NOTIFICATION_CLICK_ENDPOINT)!
 
+    }
+    
+    private static func getReceiveCallbackUrl() -> URL {
+        return URL(string: CONTLO_STAGING + NOTIFICATION_RECEIVE_ENDPOINT)!
     }
     
     public static func sendNotificationClick(internalId: String) {
@@ -66,10 +71,28 @@ open class CallbackService {
     
     
     public static func sendNotificationReceive(internalId: String) {
-        var httpClient = HttpClient()
-        
+        if #available(iOSApplicationExtension 13.0, *) {
+            let processinfo = ProcessInfo()
+               processinfo.performExpiringActivity(withReason: "receiveCallback") { (expired) in
+                   if (!expired) {
+                       // Run task synchronously.
+                       self.sendReceiveCall(internalId: internalId)
+                   }
+                   else {
+                       // Cancel task.
+                      // self.cancelLongTask()
+                   }
+               }
+        } else {
+            self.sendReceiveCall(internalId: internalId)
+        }
+    }
+    
+    public static func sendReceiveCall(internalId: String) {
         DispatchQueue.global(qos: .background).async {
             do {
+                var httpClient = HttpClient()
+
     //            let jsonEvent = try JSONEncoder().encode(event)
                 guard let jsonEvent = try? JSONEncoder().encode(CallbackBody(internalId: internalId)) else { return }
 
@@ -78,7 +101,7 @@ open class CallbackService {
                 Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Sending callback with internalId: \(internalId)")
             
             
-                httpClient.sendPostRequest(url: getClickCallbackUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
+                httpClient.sendPostRequest(url: getReceiveCallbackUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
                     switch result {
                     case .success(let value):
                         do {
@@ -109,8 +132,8 @@ open class CallbackService {
                 print("Error occured : \(error)")
             }
         }
-
     }
+    
 }
 
 struct CallbackBody: Encodable {

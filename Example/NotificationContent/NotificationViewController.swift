@@ -87,6 +87,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
                 if let deepLink = notification.request.content.userInfo["primary_url"] as? String {
                     openDeepLink(deepLink)
                 }
+       
     }
     
     func openDeepLink(_ deepLink: String) {
