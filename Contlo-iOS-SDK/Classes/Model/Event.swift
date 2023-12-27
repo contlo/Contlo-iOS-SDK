@@ -35,10 +35,9 @@ func generateId() -> UInt64 {
 
 extension Event {
     mutating func addEventProperty() {
-        var data: [String: String] = [
+        let data: [String: String] = [
             "app_name": Utils.getAppName(),
             "app_version": Utils.getAppVersion(),
-//            "time_zone": Utils.getTimezone(),
             "source": "Mobile"
         ]
         if(properties != nil) {

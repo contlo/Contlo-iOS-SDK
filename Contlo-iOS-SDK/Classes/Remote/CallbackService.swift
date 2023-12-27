@@ -12,11 +12,11 @@ open class CallbackService {
     static let NOTIFICATION_CLICK_ENDPOINT = "/mobilepush_webhooks/mobilepush_click"
     static let NOTIFICATION_RECEIVE_ENDPOINT = "/mobilepush_webhooks/mobilepush_receive"
     static let TAG = "CallbackService"
-
+    
     private static func getClickCallbackUrl() -> URL {
-//        return URL(string: CONTLO_PRODUCTION + NOTIFICATION_CLICK_ENDPOINT)!
+        //        return URL(string: CONTLO_PRODUCTION + NOTIFICATION_CLICK_ENDPOINT)!
         return URL(string: CONTLO_PRODUCTION + NOTIFICATION_CLICK_ENDPOINT)!
-
+        
     }
     
     private static func getReceiveCallbackUrl() -> URL {
@@ -25,15 +25,12 @@ open class CallbackService {
     
     public static func sendNotificationClick(internalId: String) {
         DispatchQueue.global(qos: .background).async {
-            var httpClient = HttpClient()
+            let httpClient = HttpClient()
             do {
-    //            let jsonEvent = try JSONEncoder().encode(event)
                 guard let jsonEvent = try? JSONEncoder().encode(CallbackBody(internalId: internalId)) else { return }
-
-            
-    //            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+                
                 Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Sending callback with internalId: \(internalId)")
-            
+                
                 
                 httpClient.sendPostRequest(url: getClickCallbackUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
                     switch result {
@@ -42,47 +39,37 @@ open class CallbackService {
                             let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
                             if( response.isStatusSuccess()) {
                                 Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Callback successful with internalId: \(internalId)")
-    //                            completion(.success("Event successfully sent"))
                             } else {
                                 Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: "Sending callback failed with internalId: \(internalId)")
-    //                            completion(.error(response.getError()))
                             }
-        //                    return Resource<Event>(data: jsonData)
                         } catch {
                             Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: "Sending callback failed with internalId: \(internalId)")
                             print("Error occured : \(error)")
-        //                    return Resource<Event>(throwable: error)
-    //                        completion(.error(ContloError.Error(value)))
                         }
                         
                     case .failure(let error):
                         Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: "Sending callback failed: \(error)")
-    //                    completion(.error(error))
-        //                return Resource<Event>(throwable: error)
-                                    
                     }
                 })
-            } catch {
-                print("Error occured : \(error)")
             }
         }
-
+        
     }
     
     
     public static func sendNotificationReceive(internalId: String) {
         if #available(iOSApplicationExtension 13.0, *) {
             let processinfo = ProcessInfo()
-               processinfo.performExpiringActivity(withReason: "receiveCallback") { (expired) in
-                   if (!expired) {
-                       // Run task synchronously.
-                       self.sendReceiveCall(internalId: internalId)
-                   }
-                   else {
-                       // Cancel task.
-                      // self.cancelLongTask()
-                   }
-               }
+            processinfo.performExpiringActivity(withReason: "receiveCallback") { (expired) in
+                if (!expired) {
+                    // Run task synchronously.
+                    self.sendReceiveCall(internalId: internalId)
+                }
+                else {
+                    // Cancel task.
+                    // self.cancelLongTask()
+                }
+            }
         } else {
             self.sendReceiveCall(internalId: internalId)
         }
@@ -91,16 +78,13 @@ open class CallbackService {
     public static func sendReceiveCall(internalId: String) {
         DispatchQueue.global(qos: .background).async {
             do {
-                var httpClient = HttpClient()
-
-    //            let jsonEvent = try JSONEncoder().encode(event)
+                let httpClient = HttpClient()
                 guard let jsonEvent = try? JSONEncoder().encode(CallbackBody(internalId: internalId)) else { return }
-
-            
-    //            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+                
+                
                 Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Sending callback with internalId: \(internalId)")
-            
-            
+                
+                
                 httpClient.sendPostRequest(url: getReceiveCallbackUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
                     switch result {
                     case .success(let value):
@@ -108,28 +92,19 @@ open class CallbackService {
                             let response = try JSONDecoder().decode(Response.self, from: value.data(using: .utf8)!)
                             if(response.isSuccess()) {
                                 Logger.sharedInstance.log(level: LogLevel.Info, tag: TAG, message: "Callback successful with internalId: \(internalId)")
-    //                            completion(.success("Event successfully sent"))
                             } else {
                                 Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: "Sending callback failed with internalId: \(internalId)")
-    //                            completion(.error(response.getError()))
                             }
-        //                    return Resource<Event>(data: jsonData)
                         } catch {
                             Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: "Sending callback failed with internalId: \(internalId)")
                             print("Error occured : \(error)")
-        //                    return Resource<Event>(throwable: error)
-    //                        completion(.error(ContloError.Error(value)))
                         }
                         
                     case .failure(let error):
                         Logger.sharedInstance.log(level: LogLevel.Error, tag: TAG, message: "Sending callback failed: \(error)")
-    //                    completion(.error(error))
-        //                return Resource<Event>(throwable: error)
-                                    
+                        
                     }
                 })
-            } catch {
-                print("Error occured : \(error)")
             }
         }
     }
@@ -138,7 +113,7 @@ open class CallbackService {
 
 struct CallbackBody: Encodable {
     var internalId: String
-
+    
     enum CodingKeys: String, CodingKey {
         case internalId = "internal_id"
     }

@@ -8,7 +8,7 @@
         
         ConfigService.fetchConfig(apiKey: apiKey) {result in
             switch result {
-            case .success(let config):
+            case .success(_):
                 completion?("Contlo Initialized")
                 Logger.sharedInstance.log(level: LogLevel.Verbose, tag: self.TAG, message: "Contlo Initialized")
 

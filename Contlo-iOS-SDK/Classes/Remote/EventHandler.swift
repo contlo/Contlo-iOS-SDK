@@ -82,13 +82,12 @@ class EventHandler {
             completion(.error(ContloError.Error("Event Name is empty")))
         }
         
-        var httpClient = HttpClient()
+        let httpClient = HttpClient()
         DispatchQueue.global(qos: .background).async {
             do {
                 let jsonEvent = try JSONEncoder().encode(event)
             
-    //            print("Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
-                Logger.sharedInstance.log(level: LogLevel.Info, tag: "EventHandler", message: "Sending event payload: \(String(data: jsonEvent, encoding: .utf8))")
+                Logger.sharedInstance.log(level: LogLevel.Info, tag: "EventHandler", message: "Sending event payload: \(String(describing: String(data: jsonEvent, encoding: .utf8)))")
             
             
                 httpClient.sendPostRequest(url: getEventsBaseUrl(), data: String(data: jsonEvent, encoding: .utf8)!, completion: { result in
@@ -102,17 +101,14 @@ class EventHandler {
                             } else {
                                 completion(.error(response.getError()))
                             }
-        //                    return Resource<Event>(data: jsonData)
                         } catch {
                             print("Error occured : \(error)")
-        //                    return Resource<Event>(throwable: error)
                             completion(.error(ContloError.Error(value)))
                         }
                         
                     case .failure(let error):
                             print("Error occured: \(error)")
                         completion(.error(error))
-        //                return Resource<Event>(throwable: error)
                                     
                     }
                 })
@@ -124,7 +120,7 @@ class EventHandler {
     
     
     private func retrieveEventData() -> [String: String] {
-        var data: [String: String] = [
+        let data: [String: String] = [
             "app_name": Utils.getAppName(),
             "app_version": Utils.getAppVersion(),
             "time_zone": Utils.getTimezone(),

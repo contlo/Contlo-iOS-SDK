@@ -26,11 +26,9 @@ class Utils {
             case .notDetermined:
                 permission = false
                 break;
-//                    print("Notification permissions are not determined. You should request permission.")
             case .provisional:
                 permission = true
                 break
-//                    print("Notifications are provisionally authorized.")
             case .ephemeral:
                 permission = false
                 break
@@ -41,47 +39,14 @@ class Utils {
             completion(permission)
         }
     }
-    
-    @available(iOS 13.0.0, *)
-    static func isNotificationPermission() async -> Bool {
-        let center = UNUserNotificationCenter.current()
-            var permission = false
-            
         
-        
-            await center.getNotificationSettings { settings in
-                switch settings.authorizationStatus {
-                case .authorized:
-                    permission = true
-                    break
-                case .denied:
-                    permission = false
-                    break;
-                case .notDetermined:
-                    permission = false
-                    break;
-//                    print("Notification permissions are not determined. You should request permission.")
-                case .provisional:
-                    permission = true
-                    break
-//                    print("Notifications are provisionally authorized.")
-                @unknown default:
-                    break
-                }
-            }
-        return permission
-    }
-    
     static func getAppName() -> String {
         if let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String {
             return appName
-            print("App Name: \(appName)")
         } else if let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String {
             return appName
-            print("App Name: \(appName)")
         } else {
             return "NOT FOUND"
-            print("App Name not found.")
         }
 
     }
@@ -89,20 +54,16 @@ class Utils {
     static func getAppVersion() -> String {
         if let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
             return appVersion
-            print("App Version: \(appVersion)")
         } else {
             return "Not Found"
-            print("App Version not found.")
         }
     }
     
     static func getPackageName() -> String {
         if let bundleIdentifier = Bundle.main.bundleIdentifier {
             return bundleIdentifier
-            print("Bundle Identifier (similar to package name): \(bundleIdentifier)")
         } else {
             return "Not found"
-            print("Bundle Identifier not found.")
         }
     }
     
@@ -130,7 +91,7 @@ class Utils {
     }
     
     static func retrieveUserData() -> [String: String] {
-        var data: [String: String] = [
+        let data: [String: String] = [
             "app_name": Utils.getAppName(),
             "app_version": Utils.getAppVersion(),
             "source": "Mobile",

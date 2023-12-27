@@ -49,7 +49,7 @@ class FileLogger: LoggerType {
                 if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
                     // Seek to the end of the file to append the log
                     fileHandle.seekToEndOfFile()
-                    var text = logText + "\n"
+                    let text = logText + "\n"
                     // Convert the log text to data and write it to the file
                     if let data = text.data(using: .utf8) {
                         fileHandle.write(data)
@@ -60,8 +60,6 @@ class FileLogger: LoggerType {
                 } else {
                     print("Error opening the file for writing.")
                 }
-            } catch {
-                print("Error writing to the file: \(error)")
             }
         }
         

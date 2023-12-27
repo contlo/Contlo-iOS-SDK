@@ -47,7 +47,7 @@ class ContloDefaults {
         static let IS_NOTIFICATION_ENABLED = "IS_NOTIFICATION_ENABLED"
         static let IS_CONSENT_ONHOLD = "IS_CONSENT_ONHOLD"
         static let LAST_SYSTEM_EVENT = "LAST_SYSTEM_EVENT"
-
+        
         static let LOGS_COUNT_THRESHOLD = 10
         static let SOME_ERROR_OCCURRED = "Some error occured"
         static let CONTLO_LOGS_FILE = "/contlo_logs.txt"
@@ -59,11 +59,11 @@ class ContloDefaults {
         let defaults: [String: Any?] = [
             Keys.NEW_APP_INSTALL: true,
             //Keys.EXTERNAL_ID: nil,
-//            Keys.EMAIL: nil,
-//            Keys.PHONE_NUMBER: nil
-        
+            //            Keys.EMAIL: nil,
+            //            Keys.PHONE_NUMBER: nil
+            
         ]
-        UserDefaults.standard.register(defaults: defaults)
+        UserDefaults.standard.register(defaults: defaults as [String : Any])
         
         Utils.isNotificationPermission() { permission in
             setNotificationEnabled(permission)
@@ -206,7 +206,7 @@ class ContloDefaults {
     
     static func isNewAppInstall() -> Bool {
         
-        return UserDefaults.standard.bool(forKey: Keys.NEW_APP_INSTALL) ?? true
+        return UserDefaults.standard.bool(forKey: Keys.NEW_APP_INSTALL)
     }
     
     static func isFcmFound() -> Bool {

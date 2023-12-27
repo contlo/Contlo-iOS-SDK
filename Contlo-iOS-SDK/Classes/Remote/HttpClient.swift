@@ -77,7 +77,7 @@ class HttpClient {
             }
             
             guard let mime = response?.mimeType, mime == "application/json" else {
-                Logger.sharedInstance.log(level: LogLevel.Verbose, tag: HttpClient.TAG, message: "Post request error: \(response)")
+                Logger.sharedInstance.log(level: LogLevel.Verbose, tag: HttpClient.TAG, message: "Post request error: \(String(describing: response))")
                 
                 completion(.failure(NSError(domain: "HttpClient", code: 1, userInfo: nil)))
 
