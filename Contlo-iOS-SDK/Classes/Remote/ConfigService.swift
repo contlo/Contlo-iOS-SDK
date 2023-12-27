@@ -15,7 +15,7 @@ class ConfigService {
     
     
     static func getConfigUrl() -> URL {
-        return URL(string: (CONTLO_MARKETING_STAGING + CONFIG_ENDPOINT))!
+        return URL(string: (CONTLO_MARKETING + CONFIG_ENDPOINT))!
 //        return URL(string: (CONTLO_MARKETING + CONFIG_ENDPOINT))!
     }
     
@@ -48,7 +48,7 @@ class ConfigService {
                         ContloDefaults.setRemoteLogging(config.logging_enabled)
                         var logLevel = config.log_level
                         if(config.log_level == 0) {
-                            logLevel = 5
+                            logLevel = 3
                         }
                         ContloDefaults.setRemoteLoggingLevel(logLevel)
                         ContloDefaults.setBrandIconInNotification(config.notification_brand_icon)

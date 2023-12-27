@@ -15,12 +15,12 @@ open class CallbackService {
 
     private static func getClickCallbackUrl() -> URL {
 //        return URL(string: CONTLO_PRODUCTION + NOTIFICATION_CLICK_ENDPOINT)!
-        return URL(string: CONTLO_STAGING + NOTIFICATION_CLICK_ENDPOINT)!
+        return URL(string: CONTLO_PRODUCTION + NOTIFICATION_CLICK_ENDPOINT)!
 
     }
     
     private static func getReceiveCallbackUrl() -> URL {
-        return URL(string: CONTLO_STAGING + NOTIFICATION_RECEIVE_ENDPOINT)!
+        return URL(string: CONTLO_PRODUCTION + NOTIFICATION_RECEIVE_ENDPOINT)!
     }
     
     public static func sendNotificationClick(internalId: String) {

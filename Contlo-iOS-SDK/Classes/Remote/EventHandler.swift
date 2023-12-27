@@ -14,8 +14,8 @@ class EventHandler {
     static let CONTLO_STAGING = "https://api.contlo.in"
     
     private static func getEventsBaseUrl() -> URL {
-        return URL(string: CONTLO_STAGING + EVENTS_V2)!
-//        return URL(string: CONTLO_PROD + EVENTS_V2)!
+//        return URL(string: CONTLO_STAGING + EVENTS_V2)!
+        return URL(string: CONTLO_PROD + EVENTS_V2)!
 //        return CONTLO_PROD + EVENTS_V2
     }
     

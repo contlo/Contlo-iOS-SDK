@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        Contlo.initialize(apiKey: "1d46528dc635992b494ffb8961f653be")
+        Contlo.initialize(apiKey: "633d46d4eea9e41de672d640dd3db7b0")
         registerForPushNotifications()
         notification()
         // Override point for customization after application launch.
@@ -78,7 +78,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 UIApplication.shared.registerForRemoteNotifications()
             }
         }
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
+        let userInfo = notification.request.content.userInfo
+        //let actionIdentifier = response.actionIdentifier
+
+        // Check for a specific custom key in the userInfo dictionary
+        if let customValue = userInfo["internal_id"] as? String {
+            print("Received notification with custom value: \(customValue)")
+            CallbackService.sendNotificationReceive(internalId: customValue)
+        }
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {

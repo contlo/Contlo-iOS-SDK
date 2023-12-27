@@ -34,7 +34,7 @@ class NotificationService: UNNotificationServiceExtension {
             
             var internalId:String? = nil
             if let internalIdString = request.content.userInfo["internal_id"] as? String {
-                CallbackService.sendNotificationReceive(internalId: internalIdString)
+               // CallbackService.sendNotificationReceive(internalId: internalIdString)
 
                 internalId = internalIdString
             }

@@ -14,8 +14,8 @@ class ProfileHandler {
     static let CONTLO_STAGING = "https://api.contlo.in"
     
     private static func getProfileBaseUrl() -> URL {
-        return URL(string: CONTLO_STAGING + PROFILE_V2)!
-//        return URL(string: CONTLO_PROD + PROFILE_V2)!
+//        return URL(string: CONTLO_STAGING + PROFILE_V2)!
+        return URL(string: CONTLO_PROD + PROFILE_V2)!
     }
     
 //    static func sendUserData(email: String? = nil, phoneNumber: String? = nil, firstName: String? = nil, lastName: String? = nil,
@@ -35,6 +35,8 @@ class ProfileHandler {
         let externalId = ContloDefaults.getExternalId()
         let apnsToken = ContloDefaults.getDeviceToken()
         let pushConsent = ContloDefaults.isNotificationEnabled()
+        
+        
 //        let advertisingId = ContloDefaults.getAdvertisingId()
         
         let devicePropery = Utils.retrieveUserData()

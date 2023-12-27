@@ -30,7 +30,8 @@ class ViewController: UIViewController {
     @IBAction func onRegister(_ sender: UIButton) {
         print("clicked")
         print(emailField.text)
-        let finalAudience = Audience(firstName: nameField.text, userEmail: emailField.text, userPhone: phoneNumberField.text)
+        let userData = ["userId": "test-user"]
+        let finalAudience = Audience(firstName: nameField.text, lastName: "gg",  userEmail: emailField.text, userPhone: phoneNumberField.text, customProperties: userData)
             
         Contlo.sendUserData(audience: finalAudience) {result in
             print("Sending user data: \(result)")
