@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Contlo-iOS-SDK'
-  s.version          = '0.0.1-beta'
-  s.summary          = 'A short description of Contlo-iOS-SDK.'
+  s.version          = '0.1.2-beta'
+  s.summary          = 'This is the official iOS SDK For Contlo Technologies'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+This is the official iOS SDK For Contlo Technologies
                        DESC
 
   s.homepage         = 'https://github.com/contlo/Contlo-iOS-SDK'
@@ -27,7 +27,7 @@ TODO: Add long description of the pod here.
   s.author           = { 'AmanContlo' => 'aman.toppo@contlo.com' }
   s.source           = { :git => 'https://github.com/contlo/Contlo-iOS-SDK.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-  # s.swift_version = '5.0'
+  s.swift_version = '4.0'
 
   s.ios.deployment_target = '11.0'
 

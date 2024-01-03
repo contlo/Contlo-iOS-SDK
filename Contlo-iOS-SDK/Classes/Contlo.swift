@@ -88,4 +88,28 @@
             }
         }
     }
+    
+    @objc open class func registerNotificationClick(response: UNNotificationResponse) {
+        let notification = response.notification
+        let userInfo = notification.request.content.userInfo
+        let actionIdentifier = response.actionIdentifier
+
+        // Check for a specific custom key in the userInfo dictionary
+        if let customValue = userInfo["internal_id"] as? String {
+            print("Received Contlo notification with custom value: \(customValue)")
+            CallbackService.sendNotificationClick(internalId: customValue)
+        }
+    }
+    
+    @objc open class func registerNotificationReceive(request: UNNotificationRequest) {
+        var bestAttemptContent: UNMutableNotificationContent?
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+
+        
+        if let bestAttemptContent = bestAttemptContent {
+            if let internalIdString = request.content.userInfo["internal_id"] as? String {
+                CallbackService.sendNotificationReceive(internalId: internalIdString)
+            }
+        }
+    }
 }
