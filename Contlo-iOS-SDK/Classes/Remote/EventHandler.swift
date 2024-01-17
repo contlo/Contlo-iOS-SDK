@@ -20,6 +20,10 @@ class EventHandler {
     }
     
     static func sendAppEvent(eventName: String, completion: @escaping (String) -> Void) {
+        if(ContloDefaults.isTrackingDisabled()) {
+            completion("Tracking is disabled")
+            return
+        }
         if(isSameLastSystemEvent(current: eventName)) {
             return
         }
@@ -38,6 +42,10 @@ class EventHandler {
     }
     
     static func sendEvent(eventName: String, completion: @escaping (String) -> Void ) {
+        if(ContloDefaults.isTrackingDisabled()) {
+            completion("Tracking is disabled")
+            return
+        }
         let eventProperty: [String: String] = [
             "event_type": "custom"
         ]
@@ -47,6 +55,10 @@ class EventHandler {
     static func sendEvent(eventName: String, eventProperty: [String:String]?, profileProperty: [String: String]?, completion: ((String) -> Void)? = nil) {
         if(eventName.isEmpty) {
             completion?("Event name is empty")
+        }
+        if(ContloDefaults.isTrackingDisabled()) {
+            completion?("Tracking is disabled")
+            return
         }
         let email = ContloDefaults.getEmail()
         let phone = ContloDefaults.getPhoneNumber() ?? nil
@@ -80,6 +92,10 @@ class EventHandler {
     static func sendEvent(event: Event, completion: @escaping (Resource<String>) -> Void) {
         if(event.event.isEmpty) {
             completion(.error(ContloError.Error("Event Name is empty")))
+        }
+        if(ContloDefaults.isTrackingDisabled()) {
+            completion(.error(ContloError.Error("Tracking is disabled")))
+            return
         }
         
         let httpClient = HttpClient()

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Contlo-iOS-SDK'
-  s.version          = '0.1.2-beta'
+  s.version          = '1.0.0'
   s.summary          = 'This is the official iOS SDK For Contlo Technologies'
 
 # This description is used to generate tags and improve search results.

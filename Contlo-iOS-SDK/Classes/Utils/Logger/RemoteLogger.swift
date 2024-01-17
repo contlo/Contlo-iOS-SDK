@@ -32,7 +32,7 @@ class RemoteLogger: LoggerType {
     }
     
     func isLoggable(level: LogLevel) -> Bool {
-        return ContloDefaults.isRemoteLoggingEnabled() && ContloDefaults.getRemoteLoggingLevel() >= level.rawValue
+        return ContloDefaults.isRemoteLoggingEnabled() && ContloDefaults.getRemoteLoggingLevel() <= level.rawValue
     }
     
     private func logExceptionWithMessage(_ exception: NSException?, _ message: String?) {

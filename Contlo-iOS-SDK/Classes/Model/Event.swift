@@ -35,11 +35,7 @@ func generateId() -> UInt64 {
 
 extension Event {
     mutating func addEventProperty() {
-        let data: [String: String] = [
-            "app_name": Utils.getAppName(),
-            "app_version": Utils.getAppVersion(),
-            "source": "Mobile"
-        ]
+        let data = Utils.retrieveUserData()
         if(properties != nil) {
             properties?.merge(data) { (_, new) in new }
         } else {

@@ -47,6 +47,7 @@ class ContloDefaults {
         static let IS_NOTIFICATION_ENABLED = "IS_NOTIFICATION_ENABLED"
         static let IS_CONSENT_ONHOLD = "IS_CONSENT_ONHOLD"
         static let LAST_SYSTEM_EVENT = "LAST_SYSTEM_EVENT"
+        static let TRACKING_DISABLED = "TRACKING_DISABLED"
         
         static let LOGS_COUNT_THRESHOLD = 10
         static let SOME_ERROR_OCCURRED = "Some error occured"
@@ -166,6 +167,10 @@ class ContloDefaults {
         UserDefaults.standard.set(event, forKey: Keys.LAST_SYSTEM_EVENT)
     }
     
+    static func setTrackingDisabled(_ disable: Bool) {
+        UserDefaults.standard.set(disable, forKey: Keys.TRACKING_DISABLED)
+    }
+    
     // MARK: - Get Defaults
     
     static func getApiKey() -> String? {
@@ -263,6 +268,10 @@ class ContloDefaults {
     
     static func getLastSystemEvent() -> String? {
         return UserDefaults.standard.string(forKey: Keys.LAST_SYSTEM_EVENT)
+    }
+    
+    static func isTrackingDisabled() -> Bool {
+        return UserDefaults.standard.bool(forKey: Keys.TRACKING_DISABLED)
     }
     // MARK: - Synchronize Defaults
     

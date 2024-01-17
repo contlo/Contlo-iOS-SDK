@@ -64,6 +64,10 @@
             completion?("Event name cannot be empty")
             return
         }
+        if(ContloDefaults.isTrackingDisabled()) {
+            completion?("Tracking is disabled")
+            return
+        }
         EventHandler.sendEvent(eventName: eventName, eventProperty: eventProperty, profileProperty: profileProperty, completion: completion)
     }
     
@@ -111,5 +115,9 @@
                 CallbackService.sendNotificationReceive(internalId: internalIdString)
             }
         }
+    }
+    
+    @objc open class func disableTracking(disable: Bool) {
+        ContloDefaults.setTrackingDisabled(disable)
     }
 }
